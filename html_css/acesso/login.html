@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-700 flex items-center justify-center min-h-screen">
+<div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
+
+    <img src="/static/acesso/imagens/Universidade_Franciscana_logo-removebg-preview%20(2).png" alt="Logo UFN" class="mx-auto mb-6 w-40" />
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Entrar na Conta</h2>
+
+    <form class="space-y-5">
+        <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
+            <input type="email" id="email" name="email" required
+                   class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        </div>
+
+        <div>
+            <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
+            <input type="password" id="password" name="password" required
+                   class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        </div>
+
+        <div class="flex items-center justify-between">
+            <label class="flex items-center">
+                <input type="checkbox" class="h-4 w-4 text-blue-600 rounded" />
+                <span class="ml-2 text-sm text-gray-600">Lembrar-me</span>
+            </label>
+            <a href="#" class="text-sm text-yellow-500 hover:underline">Esqueceu a senha?</a>
+        </div>
+
+        <button type="submit"
+                class="w-full bg-yellow-400 text-black p-2 rounded-md hover:bg-yellow-500 transition">Entrar</button>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-gray-800">
+        Não tem uma conta?
+        <a href="#" class="text-yellow-500 hover:underline">Cadastre-se</a>
+    </p>
+</div>
+</body>
+</html>
