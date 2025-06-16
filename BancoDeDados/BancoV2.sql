@@ -1,16 +1,15 @@
--- Criação do banco de dados
 CREATE DATABASE IF NOT EXISTS portaria_ufn;
 USE portaria_ufn;
 
--- Tabela de usuários (professores e colaboradores)
 CREATE TABLE usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     tipo ENUM('professor', 'colaborador') NOT NULL,
-    codigo_barra VARCHAR(50) NOT NULL UNIQUE
+    codigo_barra VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL
 );
 
--- Tabela de itens (chaves e controles de ar-condicionado)
 CREATE TABLE item (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -19,7 +18,6 @@ CREATE TABLE item (
     status ENUM('disponivel', 'emprestado') NOT NULL DEFAULT 'disponivel'
 );
 
--- Tabela de movimentações (empréstimos e devoluções)
 CREATE TABLE movimentacao (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
