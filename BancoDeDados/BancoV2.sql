@@ -13,7 +13,7 @@ CREATE TABLE Usuario (
     codigo_barra VARCHAR(50) NOT NULL UNIQUE
 );
 
-CREATE TABLE item (
+CREATE TABLE Item (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     tipo ENUM('chave', 'controle') NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE item (
     status ENUM('disponivel', 'emprestado') NOT NULL DEFAULT 'disponivel'
 );
 
-CREATE TABLE movimentacao (
+CREATE TABLE Movimentacao (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
     id_item INT NOT NULL,
