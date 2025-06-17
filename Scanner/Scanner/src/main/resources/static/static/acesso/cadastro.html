@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-700 flex items-center justify-center min-h-screen">
+  <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
+    <img src="../acesso/imagens/Universidade_Franciscana_logo-removebg-preview%20(2).png" alt="Logo UFN" class="mx-auto mb-6 w-40" />
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Criar Conta - Porteiro</h2>
+
+    <form class="space-y-5" action="/register" method="post">
+
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Nome Completo</label>
+        <input type="nome" id="nome" name="nome" required
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
+        <input type="email" id="email" name="email" required
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
+        <input type="password" id="password" name="password" required
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+      </div>
+
+      <div>
+        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirmar Senha</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+      </div>
+
+      <button type="submit"
+        class="w-full bg-yellow-400 text-black p-2 rounded-md hover:bg-yellow-700 transition">Cadastrar</button>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-gray-600">
+      Já tem uma conta?
+      <a href="login.html" class="text-yellow-400 hover:underline">Entrar</a>
+    </p>
+  </div>
+
+  <script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+      const senha = document.getElementById("password").value;
+      const confirmar = document.getElementById("confirmPassword").value;
+
+      if (senha !== confirmar) {
+        e.preventDefault();
+        alert("As senhas não coincidem!");
+      } else {
+        e.preventDefault(); 
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 500);
+      }
+    });
+  </script>
+</body>
+</html>

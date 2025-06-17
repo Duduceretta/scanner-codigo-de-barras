@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leitura de Código de Barras - Portaria UFN</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+
+    <img class="imagem" src="../scanner/imagens/Universidade_Franciscana_logo-removebg-preview.png" alt="Logo UFN">
+
+    <h1>Leitura de Código de Barras</h1>
+    <p class="info">Aponte o leitor para o código do <strong>item</strong> e do <strong>usuário</strong>.</p>
+
+    <div class="scan-area">Aguardando leitura...</div>
+
+    <label for="codigoUsuario">Código do Usuário:</label>
+    <input type="text" id="codigoUsuario" placeholder="Aguardando leitura do cartão..." />
+
+    <label for="codigoItem">Código do Item:</label>
+    <input type="text" id="codigoItem" placeholder="Aguardando leitura da etiqueta..." />
+
+    <label for="dataHora">Data e Hora:</label>
+    <input type="text" id="dataHora" readonly />
+
+    <button onclick="confirmarMovimentacao()">Confirmar movimentação</button>
+
+    <p id="feedback" style="text-align:center; color: green; margin-top: 1rem; display: none;">
+      Movimentação registrada com sucesso!
+    </p>
+  </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const agora = new Date();
+    const formatado = agora.toLocaleString("pt-BR");
+    document.getElementById("dataHora").value = formatado;
+  }); 
+
+  function confirmarMovimentacao() {
+    const usuario = document.getElementById("codigoUsuario").value.trim();
+    const item = document.getElementById("codigoItem").value.trim();
+
+    if (!usuario || !item) {
+      alert("Preencha os dois campos: usuário e item.");
+      return;
+    }
+
+    document.getElementById("feedback").style.display = "block";
+  }
+</script>
