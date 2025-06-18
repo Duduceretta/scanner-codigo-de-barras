@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #374151; /* igual ao bg-gray-700 do login */
+    background-color: #1f2937;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,29 +15,31 @@ body {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     max-width: 600px;
     width: 90%;
+    position: relative;
 }
 
 h1 {
     text-align: center;
     font-size: 1.8rem;
     margin-bottom: 1.5rem;
-    color: #1f2937; 
+    color: #1e3a8a;
 }
 
 .info {
     text-align: center;
     margin-bottom: 1rem;
-    color: #4b5563; 
+    color: #475569;
 }
 
 .scan-area {
-    border: 2px dashed #9ca3af;
+    border: 2px dashed #94a3b8;
     padding: 2rem;
     text-align: center;
     border-radius: 10px;
-    color: #6b7280; 
+    color: #6b7280;
     font-style: italic;
     margin-bottom: 1rem;
+    background-color: #f8fafc;
 }
 
 label {
@@ -46,17 +48,24 @@ label {
     margin-bottom: 0.20rem;
     padding: 0.20rem;
     font-weight: bold;
-    color: #374151; 
+    color: #1e293b;
 }
 
 input[type="text"] {
     width: 100%;
     padding: 0.80rem;
-    border: 1px solid #d1d5db; 
+    border: 1px solid #cbd5e1;
     border-radius: 0.5rem;
-    background-color: #f9fafb; 
-    color: #374151; 
+    background-color: #f1f5f9;
+    color: #0f172a;
     font-size: 1rem;
+}
+
+input[type="text"]:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    background-color: #ffffff;
+    outline: none;
 }
 
 button {
@@ -64,18 +73,23 @@ button {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    background-color: #facc15; 
+    background-color: #15d8fa;
     color: #000000;
     border: none;
     padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
     font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 button:hover {
-    background-color: #f59e0b; 
+    background-color: #00abc9;
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
 }
 
 .imagem {
@@ -85,3 +99,88 @@ button:hover {
     margin: 0 auto 20px;
 }
 
+/* Feedback */
+.success {
+    text-align: center;
+    color: #065f46;
+    background: #d1fae5;
+    border: 1px solid #10b981;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+}
+
+.error {
+    text-align: center;
+    color: #b91c1c;
+    background: #fee2e2;
+    border: 1px solid #ef4444;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+}
+
+/* Sucesso/erro nos inputs */
+.input-success {
+    border-color: #22c55e !important;
+    background-color: #ecfdf5 !important;
+}
+
+.input-error {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2 !important;
+}
+
+/* Botão do menu */
+.menu-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: #15d8fa;
+    color: black;
+    border: none;
+    padding: 0.5rem 0.8rem;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.menu-btn:hover {
+    background-color: #00abc9;
+}
+
+/* Menu lateral */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: #1f2937;
+    padding-top: 60px;
+    transition: right 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar.show {
+    right: 0;
+}
+
+.sidebar a {
+    display: block;
+    padding: 1rem;
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar a:hover {
+    background-color: #15d8fa;
+    color: #1f2937;
+}
+
+.sidebar a.active {
+    font-weight: bold;
+    background-color: #0ea5e9;
+}

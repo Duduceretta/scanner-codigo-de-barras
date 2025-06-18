@@ -3,243 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cadastro de Usuário</title>
+  <title>Cadastro de Usuários</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Estilos para o menu lateral */
-    .menu-btn {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 1001;
-      background: #fbbf24;
-      color: black;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 18px;
-      transition: all 0.3s ease;
-    }
-
-    .menu-btn:hover {
-      background: #f59e0b;
-      transform: scale(1.05);
-    }
-
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: -300px;
-      width: 300px;
-      height: 100vh;
-      background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
-      transition: left 0.3s ease;
-      z-index: 1000;
-      padding: 80px 0 20px 0;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-    }
-
-    .sidebar.show {
-      left: 0;
-    }
-
-    .sidebar a {
-      display: block;
-      padding: 15px 25px;
-      color: #f9fafb;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      border-left: 4px solid transparent;
-      font-weight: 500;
-    }
-
-    .sidebar a:hover {
-      background: rgba(59, 130, 246, 0.1);
-      border-left-color: #fbbf24;
-      padding-left: 30px;
-    }
-
-    .sidebar a.active {
-      background: rgba(251, 191, 36, 0.1);
-      border-left-color: #fbbf24;
-      color: #fbbf24;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.5);
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-      z-index: 999;
-    }
-
-    .overlay.show {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .form-container {
-      transition: all 0.3s ease;
-    }
-
-    body.menu-open .form-container {
-      transform: translateX(20px);
-    }
-
-    /* Animação para o formulário */
-    .form-container {
-      animation: slideIn 0.5s ease-out;
-    }
-
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Melhorias nos inputs */
-    .form-input {
-      transition: all 0.3s ease;
-    }
-
-    .form-input:focus {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
-    }
-
-    .submit-btn {
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-      transition: all 0.3s ease;
-    }
-
-    .submit-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
-    }
-  </style>
 </head>
+<body class="bg-[#374151] flex items-center justify-center min-h-screen">
+  <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl relative">
 
-<body class="bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center min-h-screen">
+    <!-- Botão de voltar -->
+    <a href="../scanner/index.html" title="Voltar" class="absolute top-4 left-4 text-xl text-cyan-500 hover:text-cyan-700">🔙</a>
 
-<!-- Botão do menu -->
-<button class="menu-btn" onclick="toggleMenu()" title="Menu">&#9776;</button>
+    <img src="../acesso/imagens/Universidade_Franciscana_logo-removebg-preview%20(2).png"
+         alt="Logo UFN" class="mx-auto mb-6 w-40" />
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Cadastrar Usuários</h2>
 
-<!-- Menu lateral -->
-<div id="sidebar" class="sidebar">
-  <a href="/usuario/cadastro" class="active">Cadastrar Usuário</a>
-  <a href="/item/cadastro">Cadastrar Item</a>
-  <a href="/">Scanear</a>
-</div>
+    <form class="space-y-5">
+      <div>
+        <label for="nome" class="block text-sm font-medium text-gray-700">Nome Completo</label>
+        <input type="text" id="nome" name="nome" required
+               class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-400 focus:outline-none" />
+      </div>
 
-<!-- Overlay -->
-<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+      <div>
+        <label for="cod" class="block text-sm font-medium text-gray-700">Código de Barra</label>
+        <input type="text" id="cod" name="cod" required
+               class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-400 focus:outline-none" />
+      </div>
 
-<!-- Container principal do formulário -->
-<div class="form-container w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl">
-  <img src="/imagens/Universidade_Franciscana_logo-removebg-preview.png"
-       alt="Logo UFN"
-       class="mx-auto mb-6 w-40 transition-transform hover:scale-105" />
+      <button type="submit"
+              class="w-full bg-[#15d8fa] text-black p-2 rounded-md hover:bg-[#00abc9] transition">
+        Cadastrar Usuário
+      </button>
 
-  <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">
-    Cadastrar Usuário
-  </h2>
-
-  <!-- Formulário -->
-  <form th:action="@{/usuario/cadastrar}"
-        th:object="${usuario}"
-        method="post"
-        class="space-y-5">
-
-    <!-- Campo Nome Completo -->
-    <div>
-      <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">
-        Nome Completo <span class="text-red-500">*</span>
-      </label>
-      <input type="text"
-             th:field="*{nome}"
-             id="nome"
-             required
-             placeholder="Digite o nome completo"
-             class="form-input w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none" />
-    </div>
-
-    <!-- Campo Código de Barras -->
-    <div>
-      <label for="codigoBarra" class="block text-sm font-medium text-gray-700 mb-1">
-        Código de Barras <span class="text-red-500">*</span>
-      </label>
-      <input type="text"
-             th:field="*{codigoBarra}"
-             id="codigoBarra"
-             required
-             placeholder="Digite o código de barras"
-             class="form-input w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none" />
-    </div>
-
-    <!-- Botão de envio -->
-    <button type="submit"
-            class="submit-btn w-full text-black p-3 rounded-md font-semibold transition-all">
-      Cadastrar Usuário
-    </button>
-  </form>
-
-  <!-- Mensagens de erro/sucesso (caso precise) -->
-  <div th:if="${mensagem}"
-       class="mt-4 p-3 rounded-md bg-green-100 border border-green-400 text-green-700">
-    <span th:text="${mensagem}"></span>
+      <p id="feedback" style="text-align:center; color: green; margin-top: 1rem; display: none;">
+        Usuário cadastrado com sucesso!
+      </p>
+    </form>
   </div>
 
-  <div th:if="${erro}"
-       class="mt-4 p-3 rounded-md bg-red-100 border border-red-400 text-red-700">
-    <span th:text="${erro}"></span>
-  </div>
-</div>
-
-<script>
-  function toggleMenu() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
-    const body = document.body;
-
-    const isOpen = sidebar.classList.contains('show');
-
-    sidebar.classList.toggle('show');
-    overlay.classList.toggle('show');
-    body.classList.toggle('menu-open', !isOpen);
-  }
-
-  // Fechar menu com ESC
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      const sidebar = document.getElementById('sidebar');
-      if (sidebar.classList.contains('show')) {
-        toggleMenu();
-      }
-    }
-  });
-
-  // Validação do formulário
-  document.querySelector('form').addEventListener('submit', function(e) {
-    const nome = document.getElementById('nome').value.trim();
-    const codigoBarra = document.getElementById('codigoBarra').value.trim();
-
-    if (!nome || !codigoBarra) {
+  <script>
+    document.querySelector("form").addEventListener("submit", function (e) {
       e.preventDefault();
-      alert('Por favor, preencha todos os campos obrigatórios.');
-    }
-  });
-</script>
-
+      document.getElementById("feedback").style.display = "block";
+      this.reset();
+    });
+  </script>
 </body>
 </html>
