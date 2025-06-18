@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leitura de Código de Barras - Portaria UFN</title>
+  <style>
+    /* Reset e configurações base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    /* Container principal */
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      max-width: 500px;
+      width: 100%;
+      animation: slideIn 0.5s ease-out;
+      transition: all 0.3s ease;
+    }
+
+    body.menu-open .container {
+      transform: translateX(20px);
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Logo */
+    .imagem {
+      display: block;
+      margin: 0 auto 1.5rem;
+      width: 160px;
+      height: auto;
+      transition: transform 0.3s ease;
+    }
+
+    .imagem:hover {
+      transform: scale(1.05);
+    }
+
+    /* Título */
+    h1 {
+      text-align: center;
+      color: #1f2937;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Informações */
+    .info {
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .info strong {
+      color: #374151;
+    }
+
+    /* Área de scan */
+    .scan-area {
+      background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+      border: 2px dashed #d1d5db;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #6b7280;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .scan-area.active {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      border-color: #3b82f6;
+      color: #1d4ed8;
+    }
+
+    /* Labels */
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #374151;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    /* Inputs */
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #d1d5db;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f9fafb;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      background: white;
+      transform: translateY(-1px);
+    }
+
+    input[readonly] {
+      background: #f3f4f6;
+      cursor: not-allowed;
+    }
+
+    /* Botão principal */
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      color: #1f2937;
+      border: none;
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(251, 191, 36, 0.3);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Feedback */
+    #feedback {
+      text-align: center;
+      color: #059669;
+      margin-top: 1rem;
+      display: none;
+      padding: 0.75rem;
+      background: #d1fae5;
+      border-radius: 8px;
+      border: 1px solid #a7f3d0;
+      font-weight: 500;
+    }
+
+    #feedback.error {
+      color: #dc2626;
+      background: #fee2e2;
+      border-color: #fecaca;
+    }
+
+    /* Estilos para o menu lateral */
+    .menu-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: #fbbf24;
+      color: black;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      width: auto;
+    }
+
+    .menu-btn:hover {
+      background: #f59e0b;
+      transform: scale(1.05);
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 300px;
+      height: 100vh;
+      background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+      transition: left 0.3s ease;
+      z-index: 1000;
+      padding: 80px 0 20px 0;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+
+    .sidebar.show {
+      left: 0;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 15px 25px;
+      color: #f9fafb;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+      font-weight: 500;
+    }
+
+    .sidebar a:hover {
+      background: rgba(59, 130, 246, 0.1);
+      border-left-color: #fbbf24;
+      padding-left: 30px;
+    }
+
+    .sidebar a.active {
+      background: rgba(251, 191, 36, 0.1);
+      border-left-color: #fbbf24;
+      color: #fbbf24;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 999;
+    }
+
+    .overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Responsividade */
+    @media (max-width: 640px) {
+      .container {
+        margin: 10px;
+        padding: 1.5rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .menu-btn {
+        top: 10px;
+        left: 10px;
+      }
+    }
+
+    /* Estados dos inputs */
+    .input-success {
+      border-color: #10b981 !important;
+      background: #ecfdf5 !important;
+    }
+
+    .input-error {
+      border-color: #ef4444 !important;
+      background: #fef2f2 !important;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <img class="imagem" src="/imagens/Universidade_Franciscana_logo-removebg-preview.png" alt="Logo UFN">
+
+  <h1>Leitura de Código de Barras</h1>
+  <p class="info">Aponte o leitor para o código do <strong>item</strong> e do <strong>usuário</strong>.</p>
+
+  <div class="scan-area" id="scanArea">Aguardando leitura...</div>
+
+  <label for="codigoUsuario">
+    Código do Usuário: <span style="color: #ef4444;">*</span>
+  </label>
+  <input type="text" id="codigoUsuario" placeholder="Aguardando leitura do cartão..." />
+
+  <label for="codigoItem">
+    Código do Item: <span style="color: #ef4444;">*</span>
+  </label>
+  <input type="text" id="codigoItem" placeholder="Aguardando leitura da etiqueta..." />
+
+  <label for="dataHora">Data e Hora:</label>
+  <input type="text" id="dataHora" readonly />
+
+  <button onclick="confirmarMovimentacao()" id="confirmarBtn">
+    Confirmar Movimentação
+  </button>
+
+  <div id="feedback"></div>
+</div>
+
+<!-- Botão do menu -->
+<button class="menu-btn" onclick="toggleMenu()" title="Menu">&#9776;</button>
+
+<!-- Menu lateral -->
+<div id="sidebar" class="sidebar">
+  <a href="/usuario/cadastro">Cadastrar Usuário</a>
+  <a href="/item/cadastro">Cadastrar Item</a>
+  <a href="/" class="active">Scanner</a>
+</div>
+
+<!-- Overlay -->
+<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+
+<script>
+  // Variáveis globais
+  let scanMode = 'usuario'; // 'usuario' ou 'item'
+
+  // Função do menu (sem duplicação)
+  function toggleMenu() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const body = document.body;
+
+    const isOpen = sidebar.classList.contains('show');
+
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+    body.classList.toggle('menu-open', !isOpen);
+  }
+
+  // Fechar menu com ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar.classList.contains('show')) {
+        toggleMenu();
+      }
+    }
+  });
+
+  // Inicialização
+  document.addEventListener("DOMContentLoaded", () => {
+    atualizarDataHora();
+    configurarEventos();
+    atualizarScanArea();
+  });
+
+  // Atualizar data e hora
+  function atualizarDataHora() {
+    const agora = new Date();
+    const formatado = agora.toLocaleString("pt-BR", {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+    document.getElementById("dataHora").value = formatado;
+  }
+
+  // Configurar eventos dos inputs
+  function configurarEventos() {
+    const codigoUsuario = document.getElementById('codigoUsuario');
+    const codigoItem = document.getElementById('codigoItem');
+
+    // Eventos para o código do usuário
+    codigoUsuario.addEventListener('input', function() {
+      if (this.value.trim()) {
+        this.classList.add('input-success');
+        this.classList.remove('input-error');
+        scanMode = 'item';
+        atualizarScanArea();
+      } else {
+        this.classList.remove('input-success');
+        scanMode = 'usuario';
+        atualizarScanArea();
+      }
+    });
+
+    // Eventos para o código do item
+    codigoItem.addEventListener('input', function() {
+      if (this.value.trim()) {
+        this.classList.add('input-success');
+        this.classList.remove('input-error');
+      } else {
+        this.classList.remove('input-success');
+      }
+    });
+
+    // Focar no próximo campo ao pressionar Enter
+    codigoUsuario.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && this.value.trim()) {
+        codigoItem.focus();
+      }
+    });
+
+    codigoItem.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && this.value.trim()) {
+        confirmarMovimentacao();
+      }
+    });
+  }
+
+  // Atualizar área de scan
+  function atualizarScanArea() {
+    const scanArea = document.getElementById('scanArea');
+
+    if (scanMode === 'usuario') {
+      scanArea.textContent = 'Aguardando leitura do CARTÃO DO USUÁRIO...';
+      scanArea.classList.remove('active');
+    } else {
+      scanArea.textContent = 'Aguardando leitura da ETIQUETA DO ITEM...';
+      scanArea.classList.add('active');
+    }
+  }
+
+  // Confirmar movimentação
+  function confirmarMovimentacao() {
+    const usuario = document.getElementById("codigoUsuario").value.trim();
+    const item = document.getElementById("codigoItem").value.trim();
+    const feedback = document.getElementById("feedback");
+    const confirmarBtn = document.getElementById("confirmarBtn");
+
+    // Limpar feedback anterior
+    feedback.style.display = "none";
+    feedback.classList.remove('error');
+
+    // Validação
+    if (!usuario || !item) {
+      mostrarFeedback("Por favor, preencha os códigos do usuário e do item.", 'error');
+
+      // Marcar campos vazios
+      if (!usuario) {
+        document.getElementById("codigoUsuario").classList.add('input-error');
+      }
+      if (!item) {
+        document.getElementById("codigoItem").classList.add('input-error');
+      }
+      return;
+    }
+
+    // Desabilitar botão temporariamente
+    confirmarBtn.disabled = true;
+    confirmarBtn.textContent = 'Processando...';
+
+    // Simular processamento (aqui você faria a requisição para o backend)
+    setTimeout(() => {
+      // Aqui você faria a chamada AJAX para o seu controller Spring Boot
+      // Por exemplo: enviarMovimentacao(usuario, item);
+
+      mostrarFeedback("Movimentação registrada com sucesso!", 'success');
+      limparFormulario();
+
+      // Reabilitar botão
+      confirmarBtn.disabled = false;
+      confirmarBtn.textContent = 'Confirmar Movimentação';
+    }, 1000);
+  }
+
+  // Mostrar feedback
+  function mostrarFeedback(mensagem, tipo) {
+    const feedback = document.getElementById("feedback");
+    feedback.textContent = mensagem;
+    feedback.style.display = "block";
+
+    if (tipo === 'error') {
+      feedback.classList.add('error');
+    } else {
+      feedback.classList.remove('error');
+    }
+
+    // Auto-hide após 5 segundos
+    setTimeout(() => {
+      feedback.style.display = "none";
+    }, 5000);
+  }
+
+  // Limpar formulário
+  function limparFormulario() {
+    document.getElementById("codigoUsuario").value = '';
+    document.getElementById("codigoItem").value = '';
+
+    // Remover classes de validação
+    document.getElementById("codigoUsuario").classList.remove('input-success', 'input-error');
+    document.getElementById("codigoItem").classList.remove('input-success', 'input-error');
+
+    // Resetar modo de scan
+    scanMode = 'usuario';
+    atualizarScanArea();
+    atualizarDataHora();
+
+    // Focar no primeiro campo
+    document.getElementById("codigoUsuario").focus();
+  }
+
+  // Atualizar data/hora a cada minuto
+  setInterval(atualizarDataHora, 60000);
+</script>
+</body>
+</html>
