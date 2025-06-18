@@ -13,11 +13,23 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/usuarios")
+@RequestMapping("/usuario")
 public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @GetMapping("/cadastro")
+    public String mostrarFormularioCadastro(Model model) {
+        model.addAttribute("usuario", new Usuario());
+        return "scanner/cadastro_usuario";
+    }
+
+    @PostMapping("/cadastrar")
+    public String salvarCadastro(@ModelAttribute Usuario usuario) {
+        usuarioService.salvar(usuario);
+        return "redirect:/usuario/cadastro";
+    }
 
     @GetMapping
     public String listar(Model model) {
@@ -25,19 +37,19 @@ public class UsuarioController {
         return "usuarios/lista";
     }
 
-    @GetMapping("/novo")
-    public String mostrarFormCadastro(Usuario usuario) {
-        return "usuarios/cadastro";
-    }
+    //@GetMapping("/novo")
+    // public String mostrarFormCadastro(Usuario usuario) {
+        //return "usuarios/cadastro";
+    //}
 
-    @PostMapping
-    public String salvar(@Valid Usuario usuario, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "usuarios/cadastro";
-        }
-        usuarioService.salvar(usuario);
-        return "redirect:/usuarios";
-    }
+    //@PostMapping
+    //public String salvar(@Valid Usuario usuario, BindingResult result, Model model) {
+        //if (result.hasErrors()) {
+            //return "usuarios/cadastro";
+        //}
+        //usuarioService.salvar(usuario);
+        //return "redirect:/usuarios";
+    //}
 
     @GetMapping("/editar/{id}")
     public String mostrarFormEdicao(@PathVariable Integer id, Model model) {

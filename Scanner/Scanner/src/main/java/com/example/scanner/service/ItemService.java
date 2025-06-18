@@ -1,7 +1,7 @@
 package com.example.scanner.service;
 
 import com.example.scanner.model.Item;
-import com.example.scanner.repository.ItemDAO;
+import com.example.scanner.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,21 +12,21 @@ import java.util.Optional;
 public class ItemService {
 
     @Autowired
-    private ItemDAO itemDAO;
+    private ItemRepository itemRepository;
 
     public List<Item> listarTodos() {
-        return itemDAO.findAll();
+        return itemRepository.findAll();
     }
 
     public Optional<Item> buscarPorId(Integer id) {
-        return itemDAO.findById(id);
+        return itemRepository.findById(id);
     }
 
     public Item salvar(Item item) {
-        return itemDAO.save(item);
+        return itemRepository.save(item);
     }
 
     public void excluir(Integer id) {
-        itemDAO.deleteById(id);
+        itemRepository.deleteById(id);
     }
 }

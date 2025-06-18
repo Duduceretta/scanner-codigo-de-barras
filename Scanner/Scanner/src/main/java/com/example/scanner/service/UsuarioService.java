@@ -1,7 +1,7 @@
 package com.example.scanner.service;
 
 import com.example.scanner.model.Usuario;
-import com.example.scanner.repository.UsuarioDAO;
+import com.example.scanner.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,21 +12,22 @@ import java.util.Optional;
 public class UsuarioService {
 
     @Autowired
-    private UsuarioDAO usuarioDAO;
+    private UsuarioRepository usuarioRepository;
 
     public List<Usuario> listarTodos() {
-        return usuarioDAO.findAll();
+        return usuarioRepository.findAll();
     }
 
     public Optional<Usuario> buscarPorId(Integer id) {
-        return usuarioDAO.findById(id);
+        return usuarioRepository.findById(id);
     }
 
     public Usuario salvar(Usuario usuario) {
-        return usuarioDAO.save(usuario);
+        System.out.println("Salvando: " + usuario.getNome() + " | " + usuario.getCodigoBarra());
+        return usuarioRepository.save(usuario);
     }
 
     public void excluir(Integer id) {
-        usuarioDAO.deleteById(id);
+        usuarioRepository.deleteById(id);
     }
 }
