@@ -5,37 +5,6 @@ Permite o cadastro de usuários e itens, leitura de códigos de barras e registr
 
 ---
 
-## 📁 Estrutura de Pastas
-
-.
-├── acesso
-│ ├── imagens
-│ │ └── Universidade_Franciscana_logo.png
-│ ├── cadastro.html
-│ ├── esq.html
-│ └── login.html
-│
-├── scanner
-│ ├── imagens
-│ │ └── Universidade_Franciscana_logo.png
-│ ├── cadastro_item.html
-│ ├── cadastro_usuario.html
-│ ├── index.html
-│ ├── movimento.html
-│ ├── usuarios_itens_cadastrados.html
-│ ├── sidebar.css
-│ └── style.css
-│
-├── application.properties
-└── README.md
-
-yaml
-Sempre exibir os detalhes
-
-Copiar
-
----
-
 ## 🧩 Funcionalidades
 
 - Leitura de código de barras (usuário + item)
