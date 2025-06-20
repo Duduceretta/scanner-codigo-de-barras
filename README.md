@@ -47,9 +47,41 @@ O backend será implementado com Spring Boot, mas as rotas já estão preparadas
 
 ---
 
-## 👤 Autor
+## 📝 Licença
 
-Yuri Alexander, Eduardo Cerreta, Pedro Henrique, Miguel  
-UFN — Ciência da Computação
-"""
+Este projeto está licenciado sob os termos da licença MIT.  
+Consulte o arquivo [LICENSE](LICENSE) para mais informações.
 
+---
+
+## 👤 Autores
+
+**Luiz Miguel Toller Marconatto**  
+Curso de Ciência da Computação – Universidade Franciscana (UFN)  
+
+E-mail: luizmigueltoller@gmail.com  
+GitHub: [@MiguelToller](https://github.com/MiguelToller)
+
+---
+
+**Eduardo Carvalho Ceretta**  
+Curso de Ciência da Computação – Universidade Franciscana (UFN)  
+
+E-mail: Duduceretta@gmail.com  
+GitHub: [@Duduceretta](https://github.com/Duduceretta)
+
+---
+
+**Yuri Alexander**  
+Curso de Ciência da Computação – Universidade Franciscana (UFN)  
+
+E-mail: yuri@gmail.com  
+GitHub: [@yuyukiin](https://github.com/yuyukiin)
+
+---
+
+**Pedro Henrique Daroda**  
+Curso de Ciência da Computação – Universidade Franciscana (UFN)  
+
+E-mail: pedro@gmail.com  
+GitHub: [@pedr0xh](https://github.com/pedr0xh)
