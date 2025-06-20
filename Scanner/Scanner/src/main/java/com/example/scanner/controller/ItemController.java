@@ -1,6 +1,7 @@
 package com.example.scanner.controller;
 
 import com.example.scanner.model.Item;
+import com.example.scanner.model.Usuario;
 import com.example.scanner.service.ItemService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,25 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/itens")
+@RequestMapping("/item")
 public class ItemController {
 
     @Autowired
     private ItemService itemService;
+
+    //Mostra o cadastro de item para o porteiro
+    @GetMapping("/cadastro")
+    public String mostrarFormularioItem(Model model) {
+        model.addAttribute("item", new Item());
+        return "scanner/cadastro_item";
+    }
+
+    //Envia o formulario preenchido para o banco de dados e redireciona para o cadastro de itens
+    @PostMapping("/cadastrar")
+    public String salvarCadastroItem(@ModelAttribute Item item) {
+        itemService.salvar(item);
+        return "redirect:/item/cadastro";
+    }
 
     @GetMapping
     public String listar(Model model) {
@@ -22,19 +37,10 @@ public class ItemController {
         return "itens/lista";
     }
 
-    @GetMapping("/novo")
-    public String mostrarFormCadastro(Item item) {
-        return "itens/cadastro";
-    }
-
-    @PostMapping
-    public String salvar(@Valid Item item, BindingResult result) {
-        if (result.hasErrors()) {
-            return "itens/cadastro";
-        }
-        itemService.salvar(item);
-        return "redirect:/itens";
-    }
+    //@GetMapping("/novo")
+    //public String mostrarFormCadastro(Item item) {
+        //return "itens/cadastro";
+    //}
 
     @GetMapping("/editar/{id}")
     public String mostrarFormEdicao(@PathVariable Integer id, Model model) {

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ScannerController {
 
-    @GetMapping("/")
+    @GetMapping("/scanear")
     public String index() {
         return "scanner/index";
     }
