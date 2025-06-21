@@ -12,6 +12,7 @@ public class Porteiro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private String nome;
     private String email;
     private String senha;
 
@@ -21,6 +22,14 @@ public class Porteiro {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getEmail() {

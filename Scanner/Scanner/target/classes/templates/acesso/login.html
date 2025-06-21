@@ -12,8 +12,11 @@
   <img th:src="@{/imagens/logoUFN.png}"
        alt="Logo UFN" class="mx-auto mb-6 w-40" />
   <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Entrar na Conta - Porteiro</h2>
+  <div th:if="${erro}" class="text-red-600 text-center font-medium">
+    <p th:text="${erro}"></p>
+  </div>
 
-  <form class="space-y-5" id="loginForm">
+  <form class="space-y-5" th:action="@{/login}" method="post">
     <div>
       <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
       <input type="email" id="email" name="email" required
@@ -67,9 +70,6 @@
     } else {
       localStorage.removeItem("emailSalvo");
     }
-
-    // Continua para a próxima página simulada
-    window.location.href = "../scanner/index.html";
   });
 </script>
 </body>

@@ -31,16 +31,12 @@ public class ItemController {
         return "redirect:/item/cadastro";
     }
 
+    /*
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("itens", itemService.listarTodos());
         return "itens/lista";
     }
-
-    //@GetMapping("/novo")
-    //public String mostrarFormCadastro(Item item) {
-        //return "itens/cadastro";
-    //}
 
     @GetMapping("/editar/{id}")
     public String mostrarFormEdicao(@PathVariable Integer id, Model model) {
@@ -64,5 +60,6 @@ public class ItemController {
     public String excluir(@PathVariable Integer id) {
         itemService.excluir(id);
         return "redirect:/itens";
-    }
+    } */
+
 }

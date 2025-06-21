@@ -9,6 +9,20 @@
 </head>
 
 <body>
+
+<!-- Botão do menu -->
+<button class="menu-btn" onclick="toggleMenu()" title="Menu">&#9776;</button>
+
+<!-- Menu lateral -->
+<div id="sidebar" class="sidebar">
+  <a href="/usuario/cadastro">Cadastrar Usuário</a>
+  <a href="/item/cadastro">Cadastrar Item</a>
+  <a href="/sistema">Scanner</a>
+</div>
+
+<!-- Overlay -->
+<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+
 <div class="container">
   <img class="imagem" th:src="@{/imagens/logoUFN.png}" alt="Logo UFN">
 
@@ -36,19 +50,6 @@
 
   <div id="feedback"></div>
 </div>
-
-<!-- Botão do menu -->
-<button class="menu-btn" onclick="toggleMenu()" title="Menu">&#9776;</button>
-
-<!-- Menu lateral -->
-<div id="sidebar" class="sidebar">
-  <a href="/usuario/cadastro">Cadastrar Usuário</a>
-  <a href="/item/cadastro">Cadastrar Item</a>
-  <a href="/">Scanner</a>
-</div>
-
-<!-- Overlay -->
-<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
 <script>
   let scanMode = 'usuario';

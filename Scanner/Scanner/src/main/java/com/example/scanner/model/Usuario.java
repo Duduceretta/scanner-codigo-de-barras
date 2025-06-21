@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @Entity
-@Table(name = "Usuario")
 public class Usuario {
 
     @Id
@@ -17,7 +16,6 @@ public class Usuario {
     @NotBlank
     @Column(name = "codigo_barra", unique = true)
     private String codigoBarra;
-
 
     public Integer getId() {
         return id;

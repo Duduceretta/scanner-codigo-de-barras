@@ -31,25 +31,12 @@ public class UsuarioController {
         return "redirect:/usuario/cadastro";
     }
 
+    /*
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("usuarios", usuarioService.listarTodos());
         return "usuarios/lista";
     }
-
-    //@GetMapping("/novo")
-    // public String mostrarFormCadastro(Usuario usuario) {
-        //return "usuarios/cadastro";
-    //}
-
-    //@PostMapping
-    //public String salvar(@Valid Usuario usuario, BindingResult result, Model model) {
-        //if (result.hasErrors()) {
-            //return "usuarios/cadastro";
-        //}
-        //usuarioService.salvar(usuario);
-        //return "redirect:/usuarios";
-    //}
 
     @GetMapping("/editar/{id}")
     public String mostrarFormEdicao(@PathVariable Integer id, Model model) {
@@ -73,5 +60,5 @@ public class UsuarioController {
     public String excluir(@PathVariable Integer id) {
         usuarioService.excluir(id);
         return "redirect:/usuarios";
-    }
+    } */
 }

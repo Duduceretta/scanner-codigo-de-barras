@@ -4,11 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class ScannerController {
+public class SistemaController {
 
-    @GetMapping("/scanear")
+    @GetMapping("/sistema")
     public String index() {
-        return "scanner/index";
+        return "scanner/sistema";
     }
 
 }

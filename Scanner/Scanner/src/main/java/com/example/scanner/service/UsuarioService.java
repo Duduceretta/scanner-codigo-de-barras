@@ -23,7 +23,6 @@ public class UsuarioService {
     }
 
     public Usuario salvar(Usuario usuario) {
-        System.out.println("Salvando: " + usuario.getNome() + " | " + usuario.getCodigoBarra());
         return usuarioRepository.save(usuario);
     }
 

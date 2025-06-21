@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "item")
 public class Item {
 
     @Id
@@ -15,6 +14,7 @@ public class Item {
     @NotBlank
     private String nome;
 
+    // Precisa ter tipo?
     @NotNull
     @Enumerated(EnumType.STRING)
     private TipoItem tipo;
