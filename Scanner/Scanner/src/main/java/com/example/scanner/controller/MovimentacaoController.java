@@ -57,4 +57,10 @@ public class MovimentacaoController {
 
         return ResponseEntity.ok("Movimentação registrada com sucesso.");
     }
+
+    @GetMapping("/movimentos")
+    public String listarMovimentacoes(org.springframework.ui.Model model) {
+        model.addAttribute("movimentos", movimentacaoService.listarTodas());
+        return "scanner/movimento"; // o nome do seu HTML
+    }
 }
