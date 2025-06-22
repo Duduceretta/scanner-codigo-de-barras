@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,61 +10,68 @@
 
 <body class="bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center min-h-screen">
 
-  <button class="menu-btn" onclick="toggleMenu()" title="Menu">&#9776;</button>
+<button class="menu-btn" onclick="toggleMenu()" title="Menu">&#9776;</button>
 
-  <div id="sidebar" class="sidebar">
-    <a href="/usuario/cadastro">Cadastrar Usuário</a>
-    <a href="/item/cadastro">Cadastrar Item</a>
-    <a href="/sistema">Scanner</a>
-    <a href="/usuarios">Usuários e Itens</a>
-    <a href="/movimentos" class="active">Itens em Movimento</a>
+<div id="sidebar" class="sidebar">
+  <a href="/usuario/cadastro">Cadastrar Usuário</a>
+  <a href="/item/cadastro">Cadastrar Item</a>
+  <a href="/sistema">Scanner</a>
+  <a href="/usuarios">Usuários e Itens</a>
+  <a href="/movimentos" class="active">Itens em Movimento</a>
+</div>
+
+<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+
+<div class="w-full max-w-4xl bg-white p-8 rounded-2xl shadow-2xl space-y-10">
+  <h2 class="text-2xl font-bold text-center text-gray-800">Itens em Movimento</h2>
+
+  <table class="w-full table-auto border border-gray-300 text-sm text-left">
+    <thead class="bg-gray-100 text-gray-700">
+    <tr>
+      <th class="p-2 border">Item</th>
+      <th class="p-2 border">Código</th>
+      <th class="p-2 border">Usuário Responsável</th>
+      <th class="p-2 border">Código do Usuário</th>
+      <th class="p-2 border">Data/Hora</th>
+    </tr>
+    </thead>
+    <tbody th:if="${movimentos}" th:each="mov : ${movimentos}">
+    <tr>
+      <td class="p-2 border" th:text="${mov.item.nome}">Nome do Item</td>
+      <td class="p-2 border" th:text="${mov.item.codigoBarra}">Código do Item</td>
+      <td class="p-2 border" th:text="${mov.usuario.nome}">Nome do Usuário</td>
+      <td class="p-2 border" th:text="${mov.usuario.codigoBarra}">Código do Usuário</td>
+      <td class="p-2 border" th:text="${#dates.format(mov.dataHora, 'dd/MM/yyyy HH:mm:ss')}">Data/Hora</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div th:if="${#lists.isEmpty(movimentos)}" id="sem-dados" class="text-center text-gray-500 mt-6">
+    Nenhuma movimentação registrada no momento.
   </div>
+</div>
 
-  <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+<script>
+  function toggleMenu() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const body = document.body;
 
-  <div class="w-full max-w-4xl bg-white p-8 rounded-2xl shadow-2xl space-y-10">
-    <h2 class="text-2xl font-bold text-center text-gray-800">Itens em Movimento</h2>
+    const isOpen = sidebar.classList.contains('show');
 
-    <table class="w-full table-auto border border-gray-300 text-sm text-left">
-      <thead class="bg-gray-100 text-gray-700">
-        <tr>
-          <th class="p-2 border">Item</th>
-          <th class="p-2 border">Código</th>
-          <th class="p-2 border">Usuário Responsável</th>
-          <th class="p-2 border">Código do Usuário</th>
-          <th class="p-2 border">Data/Hora</th>
-        </tr>
-      </thead>
-      <tbody id="tabela-movimentos">
-      </tbody>
-    </table>
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+    body.classList.toggle('menu-open', !isOpen);
+  }
 
-    <div id="sem-dados" class="text-center text-gray-500 mt-6 hidden">
-      Nenhuma movimentação registrada no momento.
-    </div>
-  </div>
-
-  <script>
-    function toggleMenu() {
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
       const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('overlay');
-      const body = document.body;
-
-      const isOpen = sidebar.classList.contains('show');
-
-      sidebar.classList.toggle('show');
-      overlay.classList.toggle('show');
-      body.classList.toggle('menu-open', !isOpen);
-    }
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') {
-        const sidebar = document.getElementById('sidebar');
-        if (sidebar.classList.contains('show')) {
-          toggleMenu();
-        }
+      if (sidebar.classList.contains('show')) {
+        toggleMenu();
       }
-    });
-  </script>
+    }
+  });
+</script>
 </body>
 </html>

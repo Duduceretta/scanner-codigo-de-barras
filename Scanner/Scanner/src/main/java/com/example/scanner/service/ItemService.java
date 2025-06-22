@@ -29,4 +29,9 @@ public class ItemService {
     public void excluir(Integer id) {
         itemRepository.deleteById(id);
     }
+
+    public Optional<Item> buscarPorCodigoBarra(String codigo) {
+        return itemRepository.findByCodigoBarra(codigo);
+    }
+
 }

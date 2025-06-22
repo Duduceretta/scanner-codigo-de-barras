@@ -1,14 +1,30 @@
 package com.example.scanner.controller;
 
+import com.example.scanner.service.ItemService;
+import com.example.scanner.service.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class SistemaController {
+
+    @Autowired
+    private ItemService itemService;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @GetMapping("/sistema")
     public String index() {
         return "scanner/sistema";
     }
 
+    @GetMapping("/sistema/itens-usuarios")
+    public String exibirUsuariosEItens(Model model) {
+        model.addAttribute("usuarios", usuarioService.listarTodos());
+        model.addAttribute("itens", itemService.listarTodos());
+        return "scanner/usuarios_itens_cadastrados"; // nome do seu HTML
+    }
 }

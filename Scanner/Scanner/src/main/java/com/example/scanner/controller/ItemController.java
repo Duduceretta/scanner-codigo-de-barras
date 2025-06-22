@@ -18,9 +18,6 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
-    @Autowired
-    private UsuarioService usuarioService;
-
     //Mostra o cadastro de item para o porteiro
     @GetMapping("/cadastro")
     public String mostrarFormularioItem(Model model) {
@@ -33,13 +30,6 @@ public class ItemController {
     public String salvarCadastroItem(@ModelAttribute Item item) {
         itemService.salvar(item);
         return "redirect:/item/cadastro";
-    }
-
-    @GetMapping("/usuarios")
-    public String exibirUsuariosEItens(Model model) {
-        model.addAttribute("usuarios", usuarioService.listarTodos());
-        model.addAttribute("itens", itemService.listarTodos());
-        return "scanner/usuarios_itens_cadastrados"; // nome do seu HTML
     }
 
     /*

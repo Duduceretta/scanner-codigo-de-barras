@@ -29,4 +29,8 @@ public class UsuarioService {
     public void excluir(Integer id) {
         usuarioRepository.deleteById(id);
     }
+
+    public Optional<Usuario> buscarPorCodigoBarra(String codigo) {
+        return usuarioRepository.findByCodigoBarra(codigo);
+    }
 }

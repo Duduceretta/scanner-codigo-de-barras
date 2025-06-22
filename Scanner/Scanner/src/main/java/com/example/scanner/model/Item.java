@@ -14,7 +14,6 @@ public class Item {
     @NotBlank
     private String nome;
 
-    // Precisa ter tipo?
     @NotNull
     @Enumerated(EnumType.STRING)
     private TipoItem tipo;
