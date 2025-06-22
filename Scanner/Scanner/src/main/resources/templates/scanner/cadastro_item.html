@@ -20,6 +20,7 @@
     <a href="/usuario/cadastro">Cadastrar Usuário</a>
     <a href="/item/cadastro" class="active">Cadastrar Item</a>
     <a href="/sistema">Scanear</a>
+    <a href="/item/usuarios" class="active">Usuários e Itens</a>
 </div>
 
 <!-- Overlay -->
@@ -61,6 +62,20 @@
                    required
                    placeholder="Digite o código de barras"
                    class="form-input w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none" />
+        </div>
+
+        <!-- Campo Tipo -->
+        <div>
+            <label for="tipo" class="block text-sm font-medium text-gray-700 mb-1">
+                Tipo do Item <span class="text-red-500">*</span>
+            </label>
+            <select th:field="*{tipo}" id="tipo"
+                    class="form-select w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none">
+                <option value="" disabled selected>Selecione o tipo</option>
+                <option th:each="tipo : ${T(com.example.scanner.model.Item.TipoItem).values()}"
+                        th:value="${tipo}" th:text="${tipo}">
+                </option>
+            </select>
         </div>
 
         <!-- Botão de envio -->
