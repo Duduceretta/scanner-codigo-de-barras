@@ -1,6 +1,7 @@
 package com.example.scanner.service;
 
 import com.example.scanner.model.Item;
+import com.example.scanner.model.Item.StatusItem;
 import com.example.scanner.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,18 @@ public class ItemService {
 
     public Optional<Item> buscarPorCodigoBarra(String codigo) {
         return itemRepository.findByCodigoBarra(codigo);
+    }
+
+    public void atualizarStatus(Integer idItem, StatusItem novoStatus) {
+        Item item = itemRepository.findById(idItem)
+                .orElseThrow(() -> new RuntimeException("Item não encontrado"));
+
+        if (novoStatus == StatusItem.emprestado && item.getStatus() == StatusItem.emprestado) {
+            throw new IllegalStateException("Item já está emprestado");
+        }
+
+        item.setStatus(novoStatus);
+        itemRepository.save(item);
     }
 
 }
