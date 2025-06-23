@@ -1,11 +1,9 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #374151; /* igual ao bg-gray-700 do login */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: #374151;
   min-height: 100vh;
+  padding-top: 60px; /* evita que o botão do menu cubra o conteúdo */
 }
 
 .container {
@@ -16,6 +14,8 @@ body {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   max-width: 600px;
   width: 90%;
+  z-index: 1;
+  margin: auto;
 }
 
 h1 {
@@ -73,6 +73,8 @@ button {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  z-index: 2;
+  position: relative;
 }
 
 button:hover {
@@ -84,4 +86,23 @@ button:hover {
   height: auto;
   display: block;
   margin: 0 auto 20px;
+}
+
+.input-error {
+  border-color: #ef4444;
+}
+
+.input-success {
+  border-color: #10b981;
+}
+
+#feedback {
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: bold;
+  color: #10b981;
+}
+
+#feedback.error {
+  color: #ef4444;
 }

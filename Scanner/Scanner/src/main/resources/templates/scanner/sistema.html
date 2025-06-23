@@ -4,11 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Leitura de Código de Barras - Portaria UFN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" th:href="@{/css/style.css}">
   <link rel="stylesheet" th:href="@{/css/sidebar.css}">
 </head>
 
-<body>
+<body class="bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center min-h-screen">
 
 <!-- Botão do menu -->
 <button class="menu-btn" onclick="toggleMenu()" title="Menu">&#9776;</button>
@@ -25,192 +26,83 @@
 <!-- Overlay -->
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
-<div class="container">
-  <img class="imagem" th:src="@{/imagens/logoUFN.png}" alt="Logo UFN">
+<!-- Container centralizado e menor -->
+<div class="container w-full max-w-sm md:max-w-md mx-auto bg-white p-8 rounded-2xl shadow-2xl">
+  <img class="mx-auto mb-6 w-40 transition-transform hover:scale-105"
+       th:src="@{/imagens/logoUFN.png}" alt="Logo UFN">
 
-  <h1>Leitura de Código de Barras</h1>
-  <p class="info">
+  <h1 class="text-2xl font-bold mb-4 text-center text-gray-800">Leitura de Código de Barras</h1>
+  <p class="text-center text-gray-600 mb-6">
     Aponte o leitor para o código do <strong>item</strong> e do <strong>usuário</strong>.
   </p>
 
-  <div class="scan-area" id="scanArea">Aguardando leitura...</div>
+  <!-- Formulário de Movimentação -->
+  <form th:action="@{/sistema/movimentar}" method="post" class="space-y-4">
+    <div>
+      <label for="codigoUsuario" class="block text-sm font-medium text-gray-700">
+        Código do Usuário: <span class="text-red-500">*</span>
+      </label>
+      <input type="text" name="codigoUsuario" id="codigoUsuario"
+             placeholder="Aguardando leitura do cartão..."
+             class="form-input w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required />
+    </div>
 
-  <label for="codigoUsuario">
-    Código do Usuário: <span style="color: #ef4444;">*</span>
-  </label>
-  <input type="text" id="codigoUsuario" placeholder="Aguardando leitura do cartão..." />
+    <div>
+      <label for="codigoItem" class="block text-sm font-medium text-gray-700">
+        Código do Item: <span class="text-red-500">*</span>
+      </label>
+      <input type="text" name="codigoItem" id="codigoItem"
+             placeholder="Aguardando leitura da etiqueta..."
+             class="form-input w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required />
+    </div>
 
-  <label for="codigoItem">
-    Código do Item: <span style="color: #ef4444;">*</span>
-  </label>
-  <input type="text" id="codigoItem" placeholder="Aguardando leitura da etiqueta..." />
+    <div>
+      <label for="dataHora" class="block text-sm font-medium text-gray-700">Data e Hora:</label>
+      <input type="text" name="dataHora" id="dataHora" readonly
+             class="form-input w-full mt-1 p-3 border border-gray-300 rounded-md bg-gray-100" />
+    </div>
 
-  <label for="dataHora">Data e Hora:</label>
-  <input type="text" id="dataHora" readonly />
+    <button type="submit"
+            class="submit-btn w-full text-black p-3 rounded-md font-semibold transition-all bg-[#15d8fa] hover:bg-[#00abc9]">
+      Confirmar Movimentação
+    </button>
+  </form>
 
-  <button onclick="confirmarMovimentacao()" id="confirmarBtn">Confirmar Movimentação</button>
-
-  <div id="feedback"></div>
+  <div id="feedback" class="mt-4 text-center font-semibold"></div>
 </div>
 
 <script>
-  let scanMode = 'usuario';
-
+  // Função de alternância de menu (mantida)
   function toggleMenu() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
     const body = document.body;
-
     const isOpen = sidebar.classList.contains('show');
-
     sidebar.classList.toggle('show');
     overlay.classList.toggle('show');
     body.classList.toggle('menu-open', !isOpen);
   }
 
-  document.addEventListener('keydown', function (e) {
+  document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
       const sidebar = document.getElementById('sidebar');
-      if (sidebar.classList.contains('show')) {
-        toggleMenu();
-      }
+      if (sidebar.classList.contains('show')) toggleMenu();
     }
   });
+
+  // Atualização do campo dataHora
+  function atualizarDataHora() {
+    const agora = new Date();
+    document.getElementById("dataHora").value = agora.toLocaleString("pt-BR", {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+  }
 
   document.addEventListener("DOMContentLoaded", () => {
     atualizarDataHora();
-    configurarEventos();
-    atualizarScanArea();
+    setInterval(atualizarDataHora, 60000);
   });
-
-  function atualizarDataHora() {
-    const agora = new Date();
-    const formatado = agora.toLocaleString("pt-BR", {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
-    document.getElementById("dataHora").value = formatado;
-  }
-
-  function configurarEventos() {
-    const codigoUsuario = document.getElementById('codigoUsuario');
-    const codigoItem = document.getElementById('codigoItem');
-
-    codigoUsuario.addEventListener('input', function () {
-      if (this.value.trim()) {
-        this.classList.add('input-success');
-        this.classList.remove('input-error');
-        scanMode = 'item';
-        atualizarScanArea();
-      } else {
-        this.classList.remove('input-success');
-        scanMode = 'usuario';
-        atualizarScanArea();
-      }
-    });
-
-    codigoItem.addEventListener('input', function () {
-      if (this.value.trim()) {
-        this.classList.add('input-success');
-        this.classList.remove('input-error');
-      } else {
-        this.classList.remove('input-success');
-      }
-    });
-
-    codigoUsuario.addEventListener('keypress', function (e) {
-      if (e.key === 'Enter' && this.value.trim()) {
-        codigoItem.focus();
-      }
-    });
-
-    codigoItem.addEventListener('keypress', function (e) {
-      if (e.key === 'Enter' && this.value.trim()) {
-        confirmarMovimentacao();
-      }
-    });
-  }
-
-  function atualizarScanArea() {
-    const scanArea = document.getElementById('scanArea');
-
-    if (scanMode === 'usuario') {
-      scanArea.textContent = 'Aguardando leitura do CARTÃO DO USUÁRIO...';
-      scanArea.classList.remove('active');
-    } else {
-      scanArea.textContent = 'Aguardando leitura da ETIQUETA DO ITEM...';
-      scanArea.classList.add('active');
-    }
-  }
-
-  function confirmarMovimentacao() {
-    const usuario = document.getElementById("codigoUsuario").value.trim();
-    const item = document.getElementById("codigoItem").value.trim();
-    const feedback = document.getElementById("feedback");
-    const confirmarBtn = document.getElementById("confirmarBtn");
-
-    feedback.style.display = "none";
-    feedback.classList.remove('error');
-
-    if (!usuario || !item) {
-      mostrarFeedback("Por favor, preencha os códigos do usuário e do item.", 'error');
-
-      if (!usuario) {
-        document.getElementById("codigoUsuario").classList.add('input-error');
-      }
-      if (!item) {
-        document.getElementById("codigoItem").classList.add('input-error');
-      }
-      return;
-    }
-
-    confirmarBtn.disabled = true;
-    confirmarBtn.textContent = 'Processando...';
-
-    setTimeout(() => {
-      mostrarFeedback("Movimentação registrada com sucesso!", 'success');
-      limparFormulario();
-
-      confirmarBtn.disabled = false;
-      confirmarBtn.textContent = 'Confirmar Movimentação';
-    }, 1000);
-  }
-
-  function mostrarFeedback(mensagem, tipo) {
-    const feedback = document.getElementById("feedback");
-    feedback.textContent = mensagem;
-    feedback.style.display = "block";
-
-    if (tipo === 'error') {
-      feedback.classList.add('error');
-    } else {
-      feedback.classList.remove('error');
-    }
-
-    setTimeout(() => {
-      feedback.style.display = "none";
-    }, 5000);
-  }
-
-  function limparFormulario() {
-    document.getElementById("codigoUsuario").value = '';
-    document.getElementById("codigoItem").value = '';
-
-    document.getElementById("codigoUsuario").classList.remove('input-success', 'input-error');
-    document.getElementById("codigoItem").classList.remove('input-success', 'input-error');
-
-    scanMode = 'usuario';
-    atualizarScanArea();
-    atualizarDataHora();
-
-    document.getElementById("codigoUsuario").focus();
-  }
-
-  setInterval(atualizarDataHora, 60000);
 </script>
 </body>
 </html>
