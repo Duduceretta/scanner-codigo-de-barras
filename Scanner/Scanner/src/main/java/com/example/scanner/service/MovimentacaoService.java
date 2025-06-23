@@ -6,6 +6,7 @@ import com.example.scanner.model.Usuario;
 import com.example.scanner.repository.MovimentacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +17,7 @@ public class MovimentacaoService {
     @Autowired
     private MovimentacaoRepository movimentacaoRepository;
 
+    @Transactional
     public Movimentacao registrarMovimentacao(Usuario usuario, Item item, Movimentacao.TipoMovimentacao tipo) {
         Movimentacao mov = new Movimentacao();
         mov.setUsuario(usuario);
