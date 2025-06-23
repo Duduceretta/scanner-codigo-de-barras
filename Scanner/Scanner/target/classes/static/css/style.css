@@ -61,7 +61,7 @@ input[type="text"] {
 }
 
 button {
-  margin-top: 1.5rem;
+  margin-top: 20rem; /* aumenta a distância entre o campo anterior e o botão */
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -105,4 +105,22 @@ button:hover {
 
 #feedback.error {
   color: #ef4444;
+}
+
+.botao-movimentacao {
+  display: block;
+  width: 100%;
+  margin-bottom: 2.0rem; /* porque o bloco acima já empurra */
+  background-color: #15d8fa;
+  color: #000;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.botao-movimentacao:hover {
+  background-color: #00abc9;
 }
