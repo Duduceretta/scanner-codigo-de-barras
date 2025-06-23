@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -60,7 +62,17 @@ public class MovimentacaoController {
 
     @GetMapping("/movimentos")
     public String listarMovimentacoes(org.springframework.ui.Model model) {
-        model.addAttribute("movimentos", movimentacaoService.listarTodas());
-        return "scanner/movimento"; // o nome do seu HTML
+        List<Movimentacao> movimentos = movimentacaoService.listarTodas();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        for (Movimentacao mov : movimentos) {
+            if (mov.getDataHora() != null) {
+                mov.setDataFormatada(mov.getDataHora().format(formatter));
+            }
+        }
+
+        model.addAttribute("movimentos", movimentos);
+        return "scanner/movimento";
     }
 }

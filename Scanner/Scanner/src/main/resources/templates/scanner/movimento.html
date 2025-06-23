@@ -43,7 +43,7 @@
       <td class="p-2 border" th:text="${mov.item.codigoBarra}">Código do Item</td>
       <td class="p-2 border" th:text="${mov.usuario.nome}">Nome do Usuário</td>
       <td class="p-2 border" th:text="${mov.usuario.codigoBarra}">Código do Usuário</td>
-      <td class="p-2 border" th:text="${#dates.format(mov.dataHora, 'dd/MM/yyyy HH:mm:ss')}">Data/Hora</td>
+      <td class="p-2 border" th:text="${mov.dataFormatada}">Data/Hora</td>
     </tr>
     </tbody>
   </table>
