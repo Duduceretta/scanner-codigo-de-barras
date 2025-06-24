@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovimentacaoService {
@@ -19,15 +20,19 @@ public class MovimentacaoService {
 
     @Transactional
     public Movimentacao registrarMovimentacao(Usuario usuario, Item item, Movimentacao.TipoMovimentacao tipo) {
-        Movimentacao mov = new Movimentacao();
-        mov.setUsuario(usuario);
-        mov.setItem(item);
-        mov.setTipo(tipo);
-        mov.setDataHora(LocalDateTime.now());
-        return movimentacaoRepository.save(mov);
+        Movimentacao movimentacao = new Movimentacao();
+        movimentacao.setUsuario(usuario);
+        movimentacao.setItem(item);
+        movimentacao.setTipo(tipo);
+        movimentacao.setDataHora(LocalDateTime.now());
+        return movimentacaoRepository.save(movimentacao);
     }
 
     public List<Movimentacao> listarTodas() {
         return movimentacaoRepository.findAll();
+    }
+
+    public Optional<Movimentacao> buscarUltimaMovimentacaoDoItem(Integer itemId) {
+        return movimentacaoRepository.findTopByItemIdOrderByDataHoraDesc(itemId);
     }
 }

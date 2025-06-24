@@ -47,9 +47,10 @@
             <input type="text"
                    th:field="*{nome}"
                    id="nomeItem"
-                   required
                    placeholder="Digite o nome do item"
                    class="form-input w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none" />
+            <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"
+               class="text-red-600 text-sm mt-1"></p>
         </div>
 
         <!-- Campo Código de Barras -->
@@ -60,9 +61,10 @@
             <input type="text"
                    th:field="*{codigoBarra}"
                    id="codigoBarra"
-                   required
                    placeholder="Digite o código de barras"
                    class="form-input w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none" />
+            <p th:if="${#fields.hasErrors('codigoBarra')}" th:errors="*{codigoBarra}"
+               class="text-red-600 text-sm mt-1"></p>
         </div>
 
         <!-- Campo Tipo -->
@@ -77,6 +79,8 @@
                         th:value="${tipo}" th:text="${tipo}">
                 </option>
             </select>
+            <p th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"
+               class="text-red-600 text-sm mt-1"></p>
         </div>
 
         <!-- Botão de envio -->
@@ -86,7 +90,7 @@
         </button>
     </form>
 
-    <!-- Mensagens de erro/sucesso -->
+    <!-- Mensagens de erro/sucesso gerais -->
     <div th:if="${mensagem}"
          class="mt-4 p-3 rounded-md bg-green-100 border border-green-400 text-green-700">
         <span th:text="${mensagem}"></span>
@@ -100,33 +104,33 @@
 
 <script>
     function toggleMenu() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('overlay');
-      const body = document.body;
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const body = document.body;
 
-      const isOpen = sidebar.classList.contains('show');
-      sidebar.classList.toggle('show');
-      overlay.classList.toggle('show');
-      body.classList.toggle('menu-open', !isOpen);
+        const isOpen = sidebar.classList.contains('show');
+        sidebar.classList.toggle('show');
+        overlay.classList.toggle('show');
+        body.classList.toggle('menu-open', !isOpen);
     }
 
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-        const sidebar = document.getElementById('sidebar');
-        if (sidebar.classList.contains('show')) {
-          toggleMenu();
+        if (e.key === 'Escape') {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.classList.contains('show')) {
+                toggleMenu();
+            }
         }
-      }
     });
 
     document.querySelector('form').addEventListener('submit', function(e) {
-      const nomeItem = document.getElementById('nomeItem').value.trim();
-      const codigoBarra = document.getElementById('codigoBarra').value.trim();
+        const nomeItem = document.getElementById('nomeItem').value.trim();
+        const codigoBarra = document.getElementById('codigoBarra').value.trim();
 
-      if (!nomeItem || !codigoBarra) {
-        e.preventDefault();
-        alert('Por favor, preencha todos os campos obrigatórios.');
-      }
+        if (!nomeItem || !codigoBarra) {
+            e.preventDefault();
+            alert('Por favor, preencha todos os campos obrigatórios.');
+        }
     });
 </script>
 

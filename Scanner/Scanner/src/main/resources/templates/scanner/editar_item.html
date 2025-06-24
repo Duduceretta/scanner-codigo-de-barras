@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Item</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+  <h2 class="text-2xl font-bold mb-4 text-center">Editar Item</h2>
+  <form th:action="@{/item/editar/{id}(id=${item.id})}" th:object="${item}" method="post">
+    <div class="mb-4">
+      <label class="block text-gray-700">Nome</label>
+      <input th:field="*{nome}" type="text" class="w-full border rounded p-2" required>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700">Tipo</label>
+      <select th:field="*{tipo}" class="w-full border rounded p-2">
+        <option value="chave">Chave</option>
+        <option value="controle">Controle</option>
+      </select>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700">Código de Barras</label>
+      <input th:field="*{codigoBarra}" type="text" class="w-full border rounded p-2" required>
+    </div>
+    <div class="flex justify-between">
+      <a href="/sistema/itens-usuarios" class="text-blue-500 hover:underline">Cancelar</a>
+      <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Salvar</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>

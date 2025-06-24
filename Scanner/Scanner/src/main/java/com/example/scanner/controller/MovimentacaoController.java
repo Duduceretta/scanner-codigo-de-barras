@@ -6,11 +6,11 @@ import com.example.scanner.model.Usuario;
 import com.example.scanner.service.ItemService;
 import com.example.scanner.service.MovimentacaoService;
 import com.example.scanner.service.UsuarioService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.format.DateTimeFormatter;
@@ -33,46 +33,71 @@ public class MovimentacaoController {
     @PostMapping("/confirmar")
     @ResponseBody
     public ResponseEntity<String> confirmarMovimentacao(@RequestParam String codigoUsuario, @RequestParam String codigoItem) {
-
-        Optional<Usuario> usuario = usuarioService.buscarPorCodigoBarra(codigoUsuario);
-        Optional<Item> item = itemService.buscarPorCodigoBarra(codigoItem);
-
-        if (usuario.isEmpty()) {
+        Optional<Usuario> usuarioOpt = usuarioService.buscarPorCodigoBarra(codigoUsuario);
+        if (usuarioOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário não encontrado.");
         }
 
-        if (item.isEmpty()) {
+        Optional<Item> itemOpt = itemService.buscarPorCodigoBarra(codigoItem);
+        if (itemOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Item não encontrado.");
         }
 
-        if (item.get().getStatus() != Item.StatusItem.disponivel) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Item não está disponível.");
+        Item item = itemOpt.get();
+        if (item.getStatus() != Item.StatusItem.disponivel) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Item não está disponível para empréstimo.");
         }
 
-        // Atualiza status do item para "emprestado"
-        Item itemAtualizado = item.get();
-        itemAtualizado.setStatus(Item.StatusItem.emprestado);
-        itemService.salvar(itemAtualizado);
+        // Atualiza status do item para emprestado
+        item.setStatus(Item.StatusItem.emprestado);
+        itemService.salvar(item);
 
-        // Registra a movimentação como empréstimo
-        movimentacaoService.registrarMovimentacao(usuario.get(), itemAtualizado, Movimentacao.TipoMovimentacao.EMPRESTIMO);
+        // Registra movimentação de empréstimo
+        movimentacaoService.registrarMovimentacao(usuarioOpt.get(), item, Movimentacao.TipoMovimentacao.EMPRESTIMO);
 
         return ResponseEntity.ok("Movimentação registrada com sucesso.");
     }
 
     @GetMapping("/movimentos")
-    public String listarMovimentacoes(org.springframework.ui.Model model) {
+    public String listarMovimentacoes(Model model) {
         List<Movimentacao> movimentos = movimentacaoService.listarTodas();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-
-        for (Movimentacao mov : movimentos) {
+        movimentos.forEach(mov -> {
             if (mov.getDataHora() != null) {
                 mov.setDataFormatada(mov.getDataHora().format(formatter));
             }
-        }
+        });
 
         model.addAttribute("movimentos", movimentos);
         return "scanner/movimento";
+    }
+
+    @PostMapping("/devolver")
+    @ResponseBody
+    public ResponseEntity<String> devolverItem(@RequestParam("codigoItem") String codigoItem) {
+        Optional<Item> itemOpt = itemService.buscarPorCodigoBarra(codigoItem);
+        if (itemOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Item não encontrado.");
+        }
+
+        Item item = itemOpt.get();
+        if (item.getStatus() != Item.StatusItem.emprestado) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Item não está emprestado.");
+        }
+
+        // Atualiza status para disponível
+        item.setStatus(Item.StatusItem.disponivel);
+        itemService.salvar(item);
+
+        Optional<Movimentacao> ultimaMovOpt = movimentacaoService.buscarUltimaMovimentacaoDoItem(item.getId());
+        if (ultimaMovOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar última movimentação.");
+        }
+
+        Usuario usuario = ultimaMovOpt.get().getUsuario();
+        movimentacaoService.registrarMovimentacao(usuario, item, Movimentacao.TipoMovimentacao.DEVOLUCAO);
+
+        return ResponseEntity.ok("Item devolvido com sucesso.");
     }
 }

@@ -26,7 +26,7 @@
 <!-- Overlay -->
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
-<!-- Container centralizado e menor -->
+<!-- Container do formulário -->
 <div class="container w-full max-w-sm md:max-w-md mx-auto bg-white p-8 rounded-2xl shadow-2xl">
   <img class="mx-auto mb-6 w-40 transition-transform hover:scale-105"
        th:src="@{/imagens/logoUFN.png}" alt="Logo UFN">
@@ -36,8 +36,8 @@
     Aponte o leitor para o código do <strong>item</strong> e do <strong>usuário</strong>.
   </p>
 
-  <!-- Formulário de Movimentação -->
-  <form th:action="@{/sistema/confirmar}" method="post" class="space-y-4">
+  <!-- Formulário -->
+  <form id="formMovimentar" class="space-y-4">
     <div>
       <label for="codigoUsuario" class="block text-sm font-medium text-gray-700">
         Código do Usuário: <span class="text-red-500">*</span>
@@ -62,7 +62,6 @@
              class="form-input w-full mt-1 p-3 border border-gray-300 rounded-md bg-gray-100" />
     </div>
 
-    <!-- Botão de confirmação com margem superior -->
     <button type="submit" class="botao-movimentacao">
       Confirmar Movimentação
     </button>
@@ -72,7 +71,6 @@
 </div>
 
 <script>
-  // Função de alternância de menu (mantida)
   function toggleMenu() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
@@ -90,7 +88,6 @@
     }
   });
 
-  // Atualização do campo dataHora
   function atualizarDataHora() {
     const agora = new Date();
     document.getElementById("dataHora").value = agora.toLocaleString("pt-BR", {
@@ -101,7 +98,60 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     atualizarDataHora();
-    setInterval(atualizarDataHora, 1);
+    setInterval(atualizarDataHora, 60000);
+  });
+
+  // Submissão assíncrona com alert e limpeza de campos
+  document.getElementById("formMovimentar").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const codigoUsuarioInput = document.getElementById("codigoUsuario");
+    const codigoItemInput = document.getElementById("codigoItem");
+    const feedback = document.getElementById("feedback");
+
+    const codigoUsuario = codigoUsuarioInput.value.trim();
+    const codigoItem = codigoItemInput.value.trim();
+
+    if (!codigoUsuario || !codigoItem) {
+      feedback.textContent = "Preencha todos os campos obrigatórios.";
+      feedback.className = "mt-4 text-center font-semibold text-red-600";
+      return;
+    }
+
+    const formData = new URLSearchParams();
+    formData.append("codigoUsuario", codigoUsuario);
+    formData.append("codigoItem", codigoItem);
+
+    try {
+      const response = await fetch("/sistema/confirmar", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData
+      });
+
+      const msg = await response.text();
+
+      if (response.ok) {
+        alert("Item emprestado com sucesso!");
+        feedback.textContent = msg;
+        feedback.className = "mt-4 text-center font-semibold text-green-600";
+
+        // Limpa os campos
+        codigoUsuarioInput.value = "";
+        codigoItemInput.value = "";
+        codigoUsuarioInput.focus();
+
+        // Atualiza hora após confirmação
+        atualizarDataHora();
+      } else {
+        feedback.textContent = msg;
+        feedback.className = "mt-4 text-center font-semibold text-red-600";
+      }
+
+    } catch (error) {
+      feedback.textContent = "Erro na comunicação com o servidor.";
+      feedback.className = "mt-4 text-center font-semibold text-red-600";
+    }
   });
 </script>
 </body>
