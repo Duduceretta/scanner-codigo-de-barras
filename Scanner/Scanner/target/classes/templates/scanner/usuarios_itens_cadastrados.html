@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Usuários e Itens Cadastrados</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
   <link rel="stylesheet" th:href="@{/css/sidebar.css}">
 </head>
 
@@ -23,23 +24,25 @@
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
 <div class="w-full max-w-5xl bg-white p-8 rounded-2xl shadow-2xl space-y-10">
+  <img class="mx-auto mb-6 w-40 transition-transform hover:scale-105"
+       th:src="@{/imagens/logoUFN.png}" alt="Logo UFN">
   <h2 class="text-2xl font-bold text-center text-gray-800">Usuários e Itens Cadastrados</h2>
 
   <!-- Usuários -->
   <div>
     <h3 class="text-xl font-semibold text-gray-700 mb-2">Usuários</h3>
-    <table class="w-full table-auto border border-gray-300 text-sm text-left">
+    <table class="w-full table-auto border border-gray-300 text-sm text-center">
       <thead class="bg-gray-100 text-gray-700">
       <tr>
-        <th class="p-2 border">Nome</th>
-        <th class="p-2 border">Código de Barras</th>
+        <th class="p-2 border text-center">Nome</th>
+        <th class="p-2 border text-center">Código de Barras</th>
         <th class="p-2 border text-center">Ações</th>
       </tr>
       </thead>
       <tbody>
       <tr th:each="usuario : ${usuarios}">
-        <td class="p-2 border" th:text="${usuario.nome}"></td>
-        <td class="p-2 border" th:text="${usuario.codigoBarra}"></td>
+        <td class="p-2 border text-center" th:text="${usuario.nome}"></td>
+        <td class="p-2 border text-center" th:text="${usuario.codigoBarra}"></td>
         <td class="p-2 border text-center space-x-2">
           <a th:href="@{/usuario/editar/{id}(id=${usuario.id})}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded">Editar</a>
           <a th:href="@{/usuario/excluir/{id}(id=${usuario.id})}" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"
@@ -56,18 +59,18 @@
   <!-- Itens -->
   <div>
     <h3 class="text-xl font-semibold text-gray-700 mb-2">Itens</h3>
-    <table class="w-full table-auto border border-gray-300 text-sm text-left">
+    <table class="w-full table-auto border border-gray-300 text-sm text-center">
       <thead class="bg-gray-100 text-gray-700">
       <tr>
-        <th class="p-2 border">Item</th>
-        <th class="p-2 border">Código de Barras</th>
+        <th class="p-2 border text-center">Item</th>
+        <th class="p-2 border text-center">Código de Barras</th>
         <th class="p-2 border text-center">Ações</th>
       </tr>
       </thead>
       <tbody>
       <tr th:each="item : ${itens}">
-        <td class="p-2 border" th:text="${item.nome}"></td>
-        <td class="p-2 border" th:text="${item.codigoBarra}"></td>
+        <td class="p-2 border text-center" th:text="${item.nome}"></td>
+        <td class="p-2 border text-center" th:text="${item.codigoBarra}"></td>
         <td class="p-2 border text-center space-x-2">
           <a th:href="@{/item/editar/{id}(id=${item.id})}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded">Editar</a>
           <a th:href="@{/item/excluir/{id}(id=${item.id})}" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"

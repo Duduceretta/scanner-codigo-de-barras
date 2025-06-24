@@ -110,7 +110,7 @@ button:hover {
 .botao-movimentacao {
   display: block;
   width: 100%;
-  margin-bottom: 2.0rem; /* porque o bloco acima já empurra */
+  margin-bottom: 0.50rem; /* porque o bloco acima já empurra */
   background-color: #15d8fa;
   color: #000;
   border: none;
@@ -123,4 +123,33 @@ button:hover {
 
 .botao-movimentacao:hover {
   background-color: #00abc9;
+}
+
+table {
+  border-collapse: collapse; /* para que as bordas das células fiquem contínuas */
+  table-layout: fixed;       /* fixa a largura da tabela */
+}
+
+table th, table td {
+  border: 1px solid #d1d5db;
+  padding: 0.5rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  text-align: center;
+  vertical-align: middle;
+}
+
+table th:nth-child(1),
+table td:nth-child(1) {
+  width: 33.33%;
+}
+
+table th:nth-child(2),
+table td:nth-child(2) {
+  width: 33.33%;
+}
+
+table th:nth-child(3),
+table td:nth-child(3) {
+  width: 33.33%;
 }

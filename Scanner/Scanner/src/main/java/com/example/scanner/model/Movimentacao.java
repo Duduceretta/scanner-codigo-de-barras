@@ -23,6 +23,17 @@ public class Movimentacao {
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
+    @Transient
+    private String dataFormatada;
+
+    public String getDataFormatada() {
+        return dataFormatada;
+    }
+
+    public void setDataFormatada(String dataFormatada) {
+        this.dataFormatada = dataFormatada;
+    }
+
     // Enum interno para o tipo de movimentação
     public enum TipoMovimentacao {
         EMPRESTIMO,
