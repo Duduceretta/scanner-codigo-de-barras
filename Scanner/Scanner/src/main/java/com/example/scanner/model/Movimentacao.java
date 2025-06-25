@@ -16,11 +16,11 @@ public class Movimentacao {
     private TipoMovimentacao tipo;  // EMPRESTIMO ou DEVOLUCAO
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
     @ManyToOne
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "id_item", nullable = false)
     private Item item;
 
     @Transient
