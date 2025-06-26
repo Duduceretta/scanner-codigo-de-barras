@@ -8,32 +8,41 @@
   <link rel="stylesheet" th:href="@{/css/sidebar.css}">
 </head>
 
-<body class="bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center min-h-screen">
+<body class="bg-[#374151] flex items-center justify-center min-h-screen">
 
 <!-- Botão do menu -->
 <button class="menu-btn" onclick="toggleMenu()" title="Menu">&#9776;</button>
+
+<!-- Menu lateral -->
 <div id="sidebar" class="sidebar">
   <a href="/usuario/cadastro">Cadastrar Usuário</a>
   <a href="/item/cadastro">Cadastrar Item</a>
-  <a href="/sistema">Scanner</a>
+  <a href="/sistema">Scanear</a>
   <a href="/sistema/itens-usuarios">Usuários e Itens</a>
   <a href="/sistema/movimentos" class="active">Itens em Movimento</a>
+  <a href="/sistema/mostrar-itens"> Mostrar Itens</a>
 </div>
+
+<!-- Overlay -->
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
-<div class="w-full max-w-6xl bg-white p-8 rounded-2xl shadow-2xl space-y-6">
+<!-- Container branco centralizado -->
+<div class="w-full max-w-6xl bg-white p-8 rounded-2xl shadow-xl space-y-6">
 
   <img class="mx-auto mb-6 w-40 transition-transform hover:scale-105" th:src="@{/imagens/logoUFN.png}" alt="Logo UFN">
+
   <h2 class="text-2xl font-bold text-center text-gray-800">Itens em Movimento</h2>
 
-  <!-- Mensagem de feedback -->
   <div id="feedback" class="text-center font-semibold mt-2"></div>
 
-  <!-- Campo de filtro -->
-  <input type="text" id="filtro" placeholder="Filtrar por nome ou código..."
-         class="w-full p-3 border rounded-md mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+  <input
+          type="text"
+          id="filtro"
+          placeholder="Filtrar por nome ou código..."
+          class="w-full p-3 border border-gray-300 rounded-md mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-400"
+  >
 
-  <table class="w-full table-auto border border-gray-300 text-sm text-left" id="tabela">
+  <table class="w-full table-auto border border-gray-300 text-sm text-left">
     <thead class="bg-gray-100 text-gray-700">
     <tr>
       <th class="p-2 border">Item</th>
@@ -41,7 +50,7 @@
       <th class="p-2 border">Usuário Responsável</th>
       <th class="p-2 border">Código do Usuário</th>
       <th class="p-2 border">Data/Hora</th>
-      <th class="p-2 border">Ações</th>
+      <th class="p-2 border text-center">Ações</th>
     </tr>
     </thead>
     <tbody th:if="${movimentos}" th:each="mov : ${movimentos}" id="corpoTabela">
@@ -51,14 +60,7 @@
       <td class="p-2 border" th:text="${mov.usuario.nome}">Nome do Usuário</td>
       <td class="p-2 border" th:text="${mov.usuario.codigoBarra}">Código do Usuário</td>
       <td class="p-2 border" th:text="${mov.dataFormatada}">Data/Hora</td>
-      <td class="p-2 border text-center">
-        <form class="form-devolver" th:action="@{/sistema/devolver}" method="post">
-          <input type="hidden" name="codigoItem" th:value="${mov.item.codigoBarra}" />
-          <button type="submit" class="px-3 py-1 text-white bg-green-600 rounded hover:bg-green-700">
-            Devolver
-          </button>
-        </form>
-      </td>
+      <td class="p-2 border text-center text-gray-500 italic">Visualização</td>
     </tr>
     </tbody>
   </table>
@@ -73,16 +75,20 @@
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
     const body = document.body;
+
     const isOpen = sidebar.classList.contains('show');
+
     sidebar.classList.toggle('show');
     overlay.classList.toggle('show');
     body.classList.toggle('menu-open', !isOpen);
   }
 
-  document.addEventListener('keydown', function (e) {
+  document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
       const sidebar = document.getElementById('sidebar');
-      if (sidebar.classList.contains('show')) toggleMenu();
+      if (sidebar.classList.contains('show')) {
+        toggleMenu();
+      }
     }
   });
 
@@ -95,40 +101,7 @@
       linha.style.display = textoLinha.includes(filtro) ? "" : "none";
     });
   });
-
-  // Intercepta submit dos formulários de devolução para mostrar mensagem no estilo do sistema
-  document.querySelectorAll(".form-devolver").forEach(form => {
-    form.addEventListener("submit", async function(event) {
-      event.preventDefault();
-
-      const formData = new FormData(this);
-      const codigoItem = formData.get("codigoItem");
-      const feedback = document.getElementById("feedback");
-
-      try {
-        const response = await fetch(this.action, {
-          method: this.method,
-          body: new URLSearchParams(formData)
-        });
-
-        const msg = await response.text();
-
-        if (response.ok) {
-          alert("Item devolvido com sucesso!");
-          feedback.textContent = msg;
-          feedback.className = "mt-2 text-center font-semibold text-green-600";
-          // Aqui você pode atualizar a tabela ou página se quiser
-        } else {
-          feedback.textContent = msg;
-          feedback.className = "mt-2 text-center font-semibold text-red-600";
-        }
-
-      } catch (error) {
-        feedback.textContent = "Erro na comunicação com o servidor.";
-        feedback.className = "mt-2 text-center font-semibold text-red-600";
-      }
-    });
-  });
 </script>
+
 </body>
 </html>
