@@ -42,8 +42,15 @@ public class ItemController {
             item.setId(id);
             return "scanner/editar_item";
         }
+
         itemService.salvar(item);
         return "redirect:/sistema/itens-usuarios";
+    }
+
+    @GetMapping("/listar-emprestados-e-disponiveis")
+    public String mostrarFormularioItensDisp(Model model) {
+        model.addAttribute("item", new Item());
+        return "scanner/itens_emprestados";
     }
 
     @GetMapping("/excluir/{id}")
