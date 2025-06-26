@@ -52,8 +52,6 @@ public class MovimentacaoController {
         item.setStatus(Item.StatusItem.emprestado);
         itemService.salvar(item);
 
-        System.out.println("Item: " + item);
-        System.out.println("ID do item: " + item.getId());
 
         // Registra movimentação de empréstimo
         movimentacaoService.registrarMovimentacao(usuarioOpt.get(), item, Movimentacao.TipoMovimentacao.EMPRESTIMO);
