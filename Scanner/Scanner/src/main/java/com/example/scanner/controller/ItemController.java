@@ -29,7 +29,7 @@ public class ItemController {
     }
 
     @GetMapping("/editar/{id}")
-    public String mostrarFormEdicao(@PathVariable Integer id, Model model) {
+    public String mostrarFormularioEdicao(@PathVariable Integer id, Model model) {
         Item item = itemService.buscarPorId(id)
                 .orElseThrow(() -> new IllegalArgumentException("Id inválido: " + id));
         model.addAttribute("item", item);
@@ -37,7 +37,7 @@ public class ItemController {
     }
 
     @PostMapping("/editar/{id}")
-    public String atualizar(@PathVariable Integer id, @Valid Item item, BindingResult result) {
+    public String salvarEdicaoItem(@PathVariable Integer id, @Valid Item item, BindingResult result) {
         if (result.hasErrors()) {
             item.setId(id);
             return "scanner/editar_item";
@@ -47,14 +47,8 @@ public class ItemController {
         return "redirect:/sistema/itens-usuarios";
     }
 
-    @GetMapping("/listar-emprestados-e-disponiveis")
-    public String mostrarFormularioItensDisp(Model model) {
-        model.addAttribute("item", new Item());
-        return "scanner/itens_emprestados";
-    }
-
     @GetMapping("/excluir/{id}")
-    public String excluir(@PathVariable Integer id) {
+    public String excluirItem(@PathVariable Integer id) {
         itemService.excluir(id);
         return "redirect:/sistema/itens-usuarios";
     }

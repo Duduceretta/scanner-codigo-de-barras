@@ -17,14 +17,14 @@ public class SistemaController {
     private UsuarioService usuarioService;
 
     @GetMapping("/sistema")
-    public String index() {
-        return "scanner/sistema";
+    public String mostrarFormularioEmprestimo() {
+        return "scanner/emprestimo_itens";
     }
 
     @GetMapping("/sistema/itens-usuarios")
-    public String exibirUsuariosEItens(Model model) {
+    public String mostrarFormularioUsuariosItens(Model model) {
         model.addAttribute("usuarios", usuarioService.listarTodos());
         model.addAttribute("itens", itemService.listarTodos());
-        return "scanner/usuarios_itens_cadastrados"; // nome do seu HTML
+        return "scanner/usuarios_itens_cadastrados";
     }
 }

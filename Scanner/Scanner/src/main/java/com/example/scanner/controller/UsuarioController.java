@@ -29,7 +29,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/editar/{id}")
-    public String mostrarFormEdicao(@PathVariable Integer id, Model model) {
+    public String mostrarFormularioEdicao(@PathVariable Integer id, Model model) {
         Usuario usuario = usuarioService.buscarPorId(id)
                 .orElseThrow(() -> new IllegalArgumentException("Id inválido:" + id));
         model.addAttribute("usuario", usuario);
@@ -37,7 +37,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/editar/{id}")
-    public String atualizar(@PathVariable Integer id, @Valid Usuario usuario, BindingResult result) {
+    public String salvarEdicaoUsuario(@PathVariable Integer id, @Valid Usuario usuario, BindingResult result) {
         if (result.hasErrors()) {
             usuario.setId(id);
             return "scanner/editar_usuario";
@@ -47,7 +47,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/excluir/{id}")
-    public String excluir(@PathVariable Integer id) {
+    public String excluirUsuario(@PathVariable Integer id) {
         usuarioService.excluir(id);
         return "redirect:/sistema/itens-usuarios";
     }

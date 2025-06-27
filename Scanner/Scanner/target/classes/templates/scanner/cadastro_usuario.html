@@ -4,31 +4,31 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cadastro de Usuário</title>
-
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" th:href="@{/css/style.css}">
   <link rel="stylesheet" th:href="@{/css/sidebar.css}">
 </head>
 
-<body class="bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center min-h-screen">
+<body class="bg-[#374151] flex items-center justify-center min-h-screen">
 
 <!-- Botão do menu -->
 <button class="menu-btn" onclick="toggleMenu()" title="Menu">&#9776;</button>
 
 <!-- Menu lateral -->
 <div id="sidebar" class="sidebar">
+  <a href="/sistema">Realizar Empréstimo</a>
+  <a href="/movimentos/listar-emprestados">Realizar Devolução</a>
   <a href="/usuario/cadastro" class="active">Cadastrar Usuário</a>
   <a href="/item/cadastro">Cadastrar Item</a>
-  <a href="/sistema">Scanear</a>
   <a href="/sistema/itens-usuarios">Usuários e Itens</a>
-  <a href="/sistema/movimentos">Itens em Movimento</a>
+  <a href="/movimentos">Registro de Movimentações</a>
 </div>
 
 <!-- Overlay -->
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
 <!-- Formulário -->
-<div class="form-container w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl">
+<div class="form-container w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
   <img th:src="@{/imagens/logoUFN.png}" alt="Logo UFN"
        class="mx-auto mb-6 w-40 transition-transform hover:scale-105" />
 
@@ -44,7 +44,7 @@
       </label>
       <input type="text" th:field="*{nome}" id="nome" required
              placeholder="Digite o nome completo"
-             class="form-input w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none" />
+             class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-400 focus:outline-none" />
     </div>
 
     <div>
@@ -53,7 +53,7 @@
       </label>
       <input type="text" th:field="*{codigoBarra}" id="codigoBarra" required
              placeholder="Digite o código de barras"
-             class="form-input w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none" />
+             class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-400 focus:outline-none" />
     </div>
 
     <button type="submit"

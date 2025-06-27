@@ -26,14 +26,6 @@ public class Movimentacao {
     @Transient
     private String dataFormatada;
 
-    public String getDataFormatada() {
-        return dataFormatada;
-    }
-
-    public void setDataFormatada(String dataFormatada) {
-        this.dataFormatada = dataFormatada;
-    }
-
     // Enum interno para o tipo de movimentação
     public enum TipoMovimentacao {
         EMPRESTIMO,
@@ -44,8 +36,6 @@ public class Movimentacao {
     public Movimentacao() {
         this.dataHora = LocalDateTime.now();
     }
-
-    // Getters e Setters
 
     public Long getId() {
         return id;
@@ -85,5 +75,13 @@ public class Movimentacao {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public String getDataFormatada() {
+        return dataFormatada;
+    }
+
+    public void setDataFormatada(String dataFormatada) {
+        this.dataFormatada = dataFormatada;
     }
 }

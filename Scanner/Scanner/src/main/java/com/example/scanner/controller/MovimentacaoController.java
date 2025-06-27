@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/sistema")
 public class MovimentacaoController {
 
     @Autowired
@@ -30,38 +30,73 @@ public class MovimentacaoController {
     @Autowired
     private MovimentacaoService movimentacaoService;
 
-    @PostMapping("/confirmar")
+    @PostMapping("/movimentos/confirmar")
     @ResponseBody
-    public ResponseEntity<String> confirmarMovimentacao(@RequestParam String codigoUsuario, @RequestParam String codigoItem) {
-        Optional<Usuario> usuarioOpt = usuarioService.buscarPorCodigoBarra(codigoUsuario);
-        if (usuarioOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário não encontrado.");
+    @Transactional
+    public synchronized ResponseEntity<String> confirmarMovimentacao(
+            @RequestParam String codigoUsuario,
+            @RequestParam String codigoItem) {
+
+        try {
+            // Busca usuário
+            Optional<Usuario> usuarioOpt = usuarioService.buscarPorCodigoBarra(codigoUsuario);
+            if (usuarioOpt.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Usuário não encontrado.");
+            }
+
+            // Busca item
+            Optional<Item> itemOpt = itemService.buscarPorCodigoBarra(codigoItem);
+            if (itemOpt.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Item não encontrado.");
+            }
+
+            Item item = itemOpt.get();
+
+            // CRÍTICO: Recarrega o item do banco para ter o status mais atual
+            item = itemService.buscarPorId(item.getId()).orElse(item);
+
+            // Verifica se já está emprestado pelo status do item
+            if (item.getStatus() == Item.StatusItem.emprestado) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Item já está emprestado.");
+            }
+
+            // Dupla verificação: busca última movimentação
+            Optional<Movimentacao> ultimaMovOpt = movimentacaoService.buscarUltimaMovimentacaoDoItem(item.getId());
+            if (ultimaMovOpt.isPresent()) {
+                Movimentacao ultimaMov = ultimaMovOpt.get();
+                if (ultimaMov.getTipo() == Movimentacao.TipoMovimentacao.EMPRESTIMO) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Item já está emprestado.");
+                }
+            }
+
+            // Atualiza status ANTES de registrar movimentação
+            item.setStatus(Item.StatusItem.emprestado);
+            itemService.salvar(item);
+
+            // Registra a movimentação
+            movimentacaoService.registrarMovimentacao(
+                    usuarioOpt.get(),
+                    item,
+                    Movimentacao.TipoMovimentacao.EMPRESTIMO
+            );
+
+            return ResponseEntity.ok("Movimentação registrada com sucesso.");
+
+        } catch (Exception e) {
+            // Log do erro
+            System.err.println("Erro ao confirmar movimentação: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro interno do servidor.");
         }
-
-        Optional<Item> itemOpt = itemService.buscarPorCodigoBarra(codigoItem);
-        if (itemOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Item não encontrado.");
-        }
-
-        Item item = itemOpt.get();
-        if (item.getStatus() != Item.StatusItem.disponivel) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Item não está disponível para empréstimo.");
-        }
-
-        // Atualiza status do item para emprestado
-        item.setStatus(Item.StatusItem.emprestado);
-        itemService.salvar(item);
-
-
-        // Registra movimentação de empréstimo
-        movimentacaoService.registrarMovimentacao(usuarioOpt.get(), item, Movimentacao.TipoMovimentacao.EMPRESTIMO);
-
-        return ResponseEntity.ok("Movimentação registrada com sucesso.");
     }
 
     @GetMapping("/movimentos")
     public String listarMovimentacoes(Model model) {
-        List<Movimentacao> movimentos = movimentacaoService.listarTodas();
+        List<Movimentacao> movimentos = movimentacaoService.listarTodasOrdenadas();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         movimentos.forEach(mov -> {
@@ -71,34 +106,20 @@ public class MovimentacaoController {
         });
 
         model.addAttribute("movimentos", movimentos);
-        return "scanner/movimento";
+        return "scanner/log_movimentacoes";
     }
 
-    @PostMapping("/devolver")
-    @ResponseBody
-    public ResponseEntity<String> devolverItem(@RequestParam("codigoItem") String codigoItem) {
-        Optional<Item> itemOpt = itemService.buscarPorCodigoBarra(codigoItem);
-        if (itemOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Item não encontrado.");
-        }
+    @GetMapping("/movimentos/listar-emprestados")
+    public String listarEmprestados(Model model) {
+        List<Movimentacao> movimentos = movimentacaoService.listarEmprestimosAtivos();
+        model.addAttribute("movimentos", movimentos);
+        return "scanner/devolucao_itens";
+    }
 
-        Item item = itemOpt.get();
-        if (item.getStatus() != Item.StatusItem.emprestado) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Item não está emprestado.");
-        }
-
-        // Atualiza status para disponível
-        item.setStatus(Item.StatusItem.disponivel);
-        itemService.salvar(item);
-
-        Optional<Movimentacao> ultimaMovOpt = movimentacaoService.buscarUltimaMovimentacaoDoItem(item.getId());
-        if (ultimaMovOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar última movimentação.");
-        }
-
-        Usuario usuario = ultimaMovOpt.get().getUsuario();
-        movimentacaoService.registrarMovimentacao(usuario, item, Movimentacao.TipoMovimentacao.DEVOLUCAO);
-
-        return ResponseEntity.ok("Item devolvido com sucesso.");
+    @PostMapping("/movimentos/devolver/{id}")
+    @Transactional
+    public String devolverItem(@PathVariable Integer id) {
+        movimentacaoService.registrarDevolucao(id);
+        return "redirect:/movimentos/listar-emprestados";
     }
 }

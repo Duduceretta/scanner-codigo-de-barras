@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Itens em Movimento</title>
+  <title>Registro de Movimentações</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" th:href="@{/css/sidebar.css}">
 </head>
@@ -15,12 +15,12 @@
 
 <!-- Menu lateral -->
 <div id="sidebar" class="sidebar">
+  <a href="/sistema">Realizar Empréstimo</a>
+  <a href="/movimentos/listar-emprestados">Realizar Devolução</a>
   <a href="/usuario/cadastro">Cadastrar Usuário</a>
   <a href="/item/cadastro">Cadastrar Item</a>
-  <a href="/sistema">Scanear</a>
   <a href="/sistema/itens-usuarios">Usuários e Itens</a>
-  <a href="/sistema/movimentos" class="active">Itens em Movimento</a>
-  <a href="/item/listar-emprestados-e-disponiveis"> Mostrar Itens</a>
+  <a href="/movimentos" class="active">Registro de Movimentações</a>
 </div>
 
 <!-- Overlay -->
@@ -31,7 +31,7 @@
 
   <img class="mx-auto mb-6 w-40 transition-transform hover:scale-105" th:src="@{/imagens/logoUFN.png}" alt="Logo UFN">
 
-  <h2 class="text-2xl font-bold text-center text-gray-800">Itens em Movimento</h2>
+  <h2 class="text-2xl font-bold text-center text-gray-800">Registro de Movimentações</h2>
 
   <div id="feedback" class="text-center font-semibold mt-2"></div>
 
@@ -45,22 +45,23 @@
   <table class="w-full table-auto border border-gray-300 text-sm text-left">
     <thead class="bg-gray-100 text-gray-700">
     <tr>
-      <th class="p-2 border">Item</th>
-      <th class="p-2 border">Código</th>
       <th class="p-2 border">Usuário Responsável</th>
-      <th class="p-2 border">Código do Usuário</th>
+      <th class="p-2 border">Código Usuário</th>
+      <th class="p-2 border">Item</th>
+      <th class="p-2 border">Código Item</th>
       <th class="p-2 border">Data/Hora</th>
-      <th class="p-2 border text-center">Ações</th>
+      <th class="p-2 border">Ação</th>
     </tr>
     </thead>
+
     <tbody th:if="${movimentos}" th:each="mov : ${movimentos}" id="corpoTabela">
     <tr>
-      <td class="p-2 border" th:text="${mov.item.nome}">Nome do Item</td>
-      <td class="p-2 border" th:text="${mov.item.codigoBarra}">Código do Item</td>
       <td class="p-2 border" th:text="${mov.usuario.nome}">Nome do Usuário</td>
       <td class="p-2 border" th:text="${mov.usuario.codigoBarra}">Código do Usuário</td>
+      <td class="p-2 border" th:text="${mov.item.nome}">Nome do Item</td>
+      <td class="p-2 border" th:text="${mov.item.codigoBarra}">Código do Item</td>
       <td class="p-2 border" th:text="${mov.dataFormatada}">Data/Hora</td>
-      <td class="p-2 border text-center text-gray-500 italic">Visualização</td>
+      <td class="p-2 border" th:text="${mov.tipo}">Ação</td>
     </tr>
     </tbody>
   </table>

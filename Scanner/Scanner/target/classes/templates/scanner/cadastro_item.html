@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cadastro de Item</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
@@ -17,11 +16,12 @@
 
 <!-- Menu lateral -->
 <div id="sidebar" class="sidebar">
+    <a href="/sistema">Realizar Empréstimo</a>
+    <a href="/movimentos/listar-emprestados">Realizar Devolução</a>
     <a href="/usuario/cadastro">Cadastrar Usuário</a>
     <a href="/item/cadastro" class="active">Cadastrar Item</a>
-    <a href="/sistema">Scanear</a>
     <a href="/sistema/itens-usuarios">Usuários e Itens</a>
-    <a href="/sistema/movimentos">Itens em Movimento</a>
+    <a href="/movimentos">Registro de Movimentações</a>
 </div>
 
 <!-- Overlay -->
