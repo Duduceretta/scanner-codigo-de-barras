@@ -26,7 +26,7 @@ CREATE TABLE Movimentacao (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
     id_item INT NOT NULL,
-    tipo ENUM('emprestimo', 'devolucao') NOT NULL,
+    tipo ENUM('EMPRESTIMO', 'DEVOLUCAO') NOT NULL,
     data_hora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_usuario) REFERENCES usuario(id),
     FOREIGN KEY (id_item) REFERENCES item(id)
