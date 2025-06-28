@@ -45,6 +45,47 @@ O Diagrama de Domínio é uma representação conceitual que descreve as princip
 
 ---
 
+## Diagrama de Caso de Uso
+
+O diagrama de casos de uso é uma ferramenta visual utilizada para representar as interações entre os atores e o sistema que está sendo modelado, destacando as funcionalidades que o sistema oferece.
+
+![C - Dominio](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/Caso%20de%20Uso.png)
+
+---
+
+## Descrição do Caso de Uso
+
+Este sistema é voltado para o controle de usuários e itens, incluindo o registro de empréstimos e devoluções. O ator principal do sistema é o Porteiro, responsável por gerenciar tanto os usuários quanto os itens cadastrados na portaria da instituição.
+
+## 👤 Ator: Porteiro
+O Porteiro tem acesso completo ao sistema e pode realizar as seguintes ações:
+
+### CadastrarUsuário
+Permite que o porteiro registre um novo usuário no sistema, informando seus dados pessoais e de acesso.
+
+### EditarUsuário
+O porteiro pode atualizar as informações de um usuário já existente, como nome, e-mail ou status.
+
+### ExcluirUsuário
+Remove um usuário do sistema de forma permanente.
+
+### CadastrarItem
+Adiciona um novo item ao acervo do sistema, com dados como nome, tipo, status e código de barras.
+
+### EditarItem
+Permite atualizar as informações de um item já cadastrado, como o nome ou o tipo.
+
+### ExcluirItem
+Remove o item do sistema, tornando-o indisponível para empréstimo.
+
+### RealizarEmprestimo
+Registra o empréstimo de um item a um usuário. O item tem seu status alterado para "emprestado".
+
+### RealizarDevolucao
+Registra a devolução de um item emprestado, alterando seu status para "disponível".
+
+---
+
 ## 🧩 Diagrama de Classes
 
 ### Item
