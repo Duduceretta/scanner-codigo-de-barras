@@ -36,6 +36,37 @@ Permite o cadastro de usuários e itens, leitura de códigos de barras e registr
 
 ---
 
+## Diagrama de Domínio
+
+O Diagrama de Domínio é uma representação conceitual que descreve as principais entidades do sistema e seus relacionamentos.
+
+![C - Dominio](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/Dominio.png)
+
+
+---
+
+## 🧩 Diagrama de Classes
+
+### Item
+
+O diagrama abaixo representa a estrutura do sistema, destacando as classes principais (`Item`, `ItemService`, `ItemRepository` e `ItemController`) e suas relações:
+
+![C - Dominio](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/Classe_Item.png)
+
+### Porteiro
+
+O diagrama abaixo representa a estrutura do sistema, destacando as classes principais (`Porteiro`, `PorteiroService`, `PorteiroRepository` e `PorteiroController`) e suas relações:
+
+![C - Dominio](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/Classe_Porteiro.png)
+
+### Usuario
+
+O diagrama abaixo representa a estrutura do sistema, destacando as classes principais (`Usuario`, `UsuarioService`, `UsuarioRepository` e `UsuarioController`) e suas relações:
+
+![C - Dominio](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/Classe_Usuario.png)
+
+---
+
 ## ⚙️ Backend
 
 O backend será implementado com Spring Boot, mas as rotas já estão preparadas para integração.
