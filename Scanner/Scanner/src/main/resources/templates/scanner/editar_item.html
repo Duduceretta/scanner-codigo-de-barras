@@ -30,6 +30,8 @@
       <input th:field="*{codigoBarra}" type="text" class="w-full border rounded p-2" required>
     </div>
 
+    <input type="hidden" th:field="*{status}" />
+
     <div class="flex justify-between">
       <a href="/sistema/itens-usuarios" class="text-blue-500 hover:underline">Cancelar</a>
       <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Salvar</button>
