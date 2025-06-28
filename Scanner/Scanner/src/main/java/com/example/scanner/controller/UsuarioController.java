@@ -4,10 +4,12 @@ import com.example.scanner.model.Usuario;
 import com.example.scanner.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/usuario")
@@ -47,8 +49,13 @@ public class UsuarioController {
     }
 
     @GetMapping("/excluir/{id}")
-    public String excluirUsuario(@PathVariable Integer id) {
-        usuarioService.excluir(id);
+    public String excluirUsuario(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        try {
+            usuarioService.excluir(id);
+            redirectAttributes.addFlashAttribute("mensagemSucesso", "Usuário excluído com sucesso!");
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("mensagemErro", "Não é possível excluir este usuário, pois há movimentações vinculadas a ele.");
+        }
         return "redirect:/sistema/itens-usuarios";
     }
 }

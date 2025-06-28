@@ -4,10 +4,12 @@ import com.example.scanner.model.Item;
 import com.example.scanner.service.ItemService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/item")
@@ -48,8 +50,13 @@ public class ItemController {
     }
 
     @GetMapping("/excluir/{id}")
-    public String excluirItem(@PathVariable Integer id) {
-        itemService.excluir(id);
+    public String excluirItem(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        try {
+            itemService.excluir(id);
+            redirectAttributes.addFlashAttribute("mensagemSucesso", "Item excluído com sucesso!");
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("mensagemErro", "Não é possível excluir este item, pois há movimentações vinculadas a ele.");
+        }
         return "redirect:/sistema/itens-usuarios";
     }
 }
