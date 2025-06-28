@@ -28,6 +28,6 @@ CREATE TABLE Movimentacao (
     id_item INT NOT NULL,
     tipo ENUM('EMPRESTIMO', 'DEVOLUCAO') NOT NULL,
     data_hora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_item) REFERENCES item(id) ON DELETE CASCADE
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id),
+    FOREIGN KEY (id_item) REFERENCES item(id)
 );
