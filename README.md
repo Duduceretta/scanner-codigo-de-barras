@@ -42,7 +42,6 @@ O Diagrama de Domínio é uma representação conceitual que descreve as princip
 
 ![C - Dominio](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/Dominio.png)
 
-
 ---
 
 ## Diagrama de Caso de Uso
@@ -105,6 +104,44 @@ O diagrama abaixo representa a estrutura do sistema, destacando as classes princ
 O diagrama abaixo representa a estrutura do sistema, destacando as classes principais (`Usuario`, `UsuarioService`, `UsuarioRepository` e `UsuarioController`) e suas relações:
 
 ![C - Dominio](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/Classe_Usuario.png)
+
+---
+
+### Diagramas de Sequência
+
+Estes diagramas mostram a interação entre os objetos para as ações do Porteiro, nas funcionalidades de cadastro, edição, exclusão de itens e usuários, empréstimo e devolução de itens.
+
+## Cadastrar Item
+
+![C - CadastrarItem_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/CadastroItem_Sequence.PNG)
+
+## Editar Item
+
+![C - EditarItem_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/EditarItem_Sequence.PNG)
+
+## Excluir Item
+
+![C - ExcluirItem_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/ExcluirItem_Sequence.PNG)
+
+## Cadastrar Usuario
+
+![C - CadastrarUsuario_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/CadastrarUsuario_Sequence.PNG)
+
+## Editar Usuario
+
+![C - EditarUsuario_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/EditarUsuario_Sequence.PNG)
+
+## Excluir Usuario
+
+![C - ExcluirUsuario_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/ExcluirUsuario_Sequence.PNG)
+
+## Realizar Emprestimo
+
+![C - RealizarEmprestimo_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/Emprestimo_Sequence.PNG)
+
+## Realizar Devolucao
+
+![C - RealizarDevolucao_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/Devolucao_Sequence.PNG)
 
 ---
 
