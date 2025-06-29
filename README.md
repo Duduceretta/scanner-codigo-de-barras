@@ -107,6 +107,12 @@ O diagrama abaixo representa a estrutura do sistema, destacando as classes princ
 
 ![C - Dominio](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/Classe_Usuario.png)
 
+### Emprestimo/Devolucao
+
+O diagrama abaixo representa o fluxo de interação entre as principais classes do sistema durante a realização de um empréstimo ou devolução de item. Ele destaca a comunicação entre as camadas Controller, Service e Repository, envolvendo as entidades Usuario e Item, além do controle de movimentações por meio da MovimentacaoService e MovimentacaoRepository. O ator principal é o Porteiro, que inicia a operação via MovimentacaoController.
+
+![C - Dominio](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/main/Diagramas/Diagrama_EmprestimoDevolucao.png)
+
 ---
 
 ### Diagramas de Sequência
@@ -132,10 +138,10 @@ Estes diagramas mostram a interação entre os objetos para as ações do Portei
 ![C - ExcluirUsuario_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/ExcluirUsuario_Sequence.PNG)
 
 ## Realizar Emprestimo
-![C - RealizarEmprestimo_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/Emprestimo_Sequence.PNG)
+![C - RealizarEmprestimo_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/main/Diagramas/Emprestimo_Sequence.PNG)
 
 ## Realizar Devolucao
-![C - RealizarDevolucao_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/Devolucao_Sequence.PNG)
+![C - RealizarDevolucao_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/main/Diagramas/Devolucao_Sequence.PNG)
 
 ---
 
