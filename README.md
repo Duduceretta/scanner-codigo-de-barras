@@ -1,18 +1,20 @@
 # 📦 ScannerCódigoDeBarras
 
-Sistema web para controle de entrega e recebimento de itens na portaria da Universidade Franciscana (UFN). \
-Permite o cadastro de usuários e itens, leitura de códigos de barras e registro de movimentações.
+> 🎓 Projeto acadêmico - Universidade Franciscana (UFN)  
+
+Sistema web para controle de **entrega e recebimento de itens na portaria da Universidade Franciscana**.  
+Permite o cadastro de usuários e itens, leitura de códigos de barras e registro das movimentações realizadas.
 
 ---
 
 ## 🧩 Funcionalidades
 
 - Leitura de código de barras (usuário + item)
-- Cadastro de usuários
-- Cadastro de itens
-- Visualização de usuários e itens cadastrados
-- Visualização de itens em movimento
-- Menu lateral retrátil
+- Cadastro, edição e exclusão de usuários
+- Cadastro, edição e exclusão de itens
+- Registro de empréstimo e devolução
+- Visualização de itens emprestados
+- Menu lateral retrátil (sidebar)
 - Estilização com Tailwind CSS e CSS customizado
 
 ---
@@ -48,7 +50,7 @@ O Diagrama de Domínio é uma representação conceitual que descreve as princip
 
 O diagrama de casos de uso é uma ferramenta visual utilizada para representar as interações entre os atores e o sistema que está sendo modelado, destacando as funcionalidades que o sistema oferece.
 
-![C - Dominio](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/Caso%20de%20Uso.png)
+![C - CasoDeUso](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/Caso%20de%20Uso.png)
 
 ---
 
@@ -112,35 +114,27 @@ O diagrama abaixo representa a estrutura do sistema, destacando as classes princ
 Estes diagramas mostram a interação entre os objetos para as ações do Porteiro, nas funcionalidades de cadastro, edição, exclusão de itens e usuários, empréstimo e devolução de itens.
 
 ## Cadastrar Item
-
 ![C - CadastrarItem_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/CadastroItem_Sequence.PNG)
 
 ## Editar Item
-
 ![C - EditarItem_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/EditarItem_Sequence.PNG)
 
 ## Excluir Item
-
 ![C - ExcluirItem_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/ExcluirItem_Sequence.PNG)
 
 ## Cadastrar Usuario
-
 ![C - CadastrarUsuario_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/CadastrarUsuario_Sequence.PNG)
 
 ## Editar Usuario
-
 ![C - EditarUsuario_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/EditarUsuario_Sequence.PNG)
 
 ## Excluir Usuario
-
 ![C - ExcluirUsuario_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/ExcluirUsuario_Sequence.PNG)
 
 ## Realizar Emprestimo
-
 ![C - RealizarEmprestimo_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/Emprestimo_Sequence.PNG)
 
 ## Realizar Devolucao
-
 ![C - RealizarDevolucao_Sequence](https://github.com/Duduceretta/ScannerCodigoDeBarras/blob/Documenta%C3%A7%C3%A3o/Diagramas/Devolucao_Sequence.PNG)
 
 ---
@@ -153,6 +147,60 @@ O backend será implementado com Spring Boot, mas as rotas já estão preparadas
 - `/item/cadastro`
 - `/usuarios`
 - `/movimentos`
+
+---
+
+## Organização dos Arquivos
+
+```
+C:.
+├───.idea
+│   ├───dataSources
+│   └───dictionaries
+├───BancoDeDados
+└───Scanner
+    └───Scanner
+        ├───src
+        │   └───main
+        │       ├───java
+        │       │   └───com
+        │       │       └───example
+        │       │           └───scanner
+        │       │               ├───controller
+        │       │               ├───model
+        │       │               ├───repository
+        │       │               └───service
+        │       └───resources
+        │           ├───static
+        │           │   ├───css
+        │           │   └───imagens
+        │           └───templates
+        │               ├───acesso
+        │               └───scanner
+        └───target
+            ├───classes
+            │   ├───com
+            │   │   └───example
+            │   │       └───scanner
+            │   │           ├───controller
+            │   │           ├───model
+            │   │           ├───repository
+            │   │           └───service
+            │   ├───static
+            │   │   ├───css
+            │   │   └───imagens
+            │   └───templates
+            │       ├───acesso
+            │       └───scanner
+            ├───generated-sources
+            │   └───annotations
+            ├───generated-test-sources
+            │   └───test-annotations
+            └───test-classes
+                └───com
+                    └───example
+                        └───scanner
+```
 
 ---
 
