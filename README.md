@@ -24,9 +24,10 @@ Permite o cadastro de usuários e itens, leitura de códigos de barras e registr
 - **Login** — `acesso/login.html`
 - **Cadastro de Usuário** — `scanner/cadastro_usuario.html`
 - **Cadastro de Item** — `scanner/cadastro_item.html`
-- **Scanner** — `scanner/index.html`
+- **Scanner** — `scanner/emprestimo_itens.html`
 - **Usuários e Itens** — `scanner/usuarios_itens_cadastrados.html`
-- **Movimentações Atuais** — `scanner/movimento.html`
+- **Movimentações Atuais** — `scanner/devolucao_itens.html`
+- **Registro de Movimentações** — `scanner/log_movimentacoes.html`
 
 ---
 
