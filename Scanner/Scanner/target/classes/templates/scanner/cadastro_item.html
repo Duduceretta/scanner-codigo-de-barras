@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,109 +27,62 @@
 <!-- Overlay -->
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
-<!-- Container principal do formulário -->
+<!-- Formulário -->
 <div class="form-container w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl">
-    <img th:src="@{/imagens/logoUFN.png}" alt="Logo UFN"
-         class="mx-auto mb-6 w-40 transition-transform hover:scale-105" />
+    <img th:src="@{/imagens/logoUFN.png}" alt="Logo UFN" class="mx-auto mb-6 w-40 transition-transform hover:scale-105" />
 
-    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">
-        Cadastrar Item
-    </h2>
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Cadastrar Item</h2>
 
-    <!-- Formulário -->
+    <!-- Alerta de erro -->
+    <div th:if="${erroCodigo}" class="mb-4 p-3 rounded-md bg-red-100 border border-red-400 text-red-700">
+        <span th:text="${erroCodigo}"></span>
+    </div>
+
     <form th:action="@{/item/cadastrar}" th:object="${item}" method="post" class="space-y-5">
-
-        <!-- Campo Nome do Item -->
         <div>
-            <label for="nomeItem" class="block text-sm font-medium text-gray-700 mb-1">
-                Nome do Item <span class="text-red-500">*</span>
-            </label>
-            <input type="text"
-                   th:field="*{nome}"
-                   id="nomeItem"
-                   placeholder="Digite o nome do item"
-                   class="form-input w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none" />
-            <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"
-               class="text-red-600 text-sm mt-1"></p>
+            <label for="nomeItem" class="block text-sm font-medium text-gray-700 mb-1">Nome do Item <span class="text-red-500">*</span></label>
+            <input type="text" th:field="*{nome}" id="nomeItem" placeholder="Digite o nome do item"
+                   class="w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none" required />
         </div>
 
-        <!-- Campo Código de Barras -->
         <div>
-            <label for="codigoBarra" class="block text-sm font-medium text-gray-700 mb-1">
-                Código de Barras <span class="text-red-500">*</span>
-            </label>
-            <input type="text"
-                   th:field="*{codigoBarra}"
-                   id="codigoBarra"
-                   placeholder="Digite o código de barras"
-                   class="form-input w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none" />
-            <p th:if="${#fields.hasErrors('codigoBarra')}" th:errors="*{codigoBarra}"
-               class="text-red-600 text-sm mt-1"></p>
+            <label for="codigoBarra" class="block text-sm font-medium text-gray-700 mb-1">Código de Barras <span class="text-red-500">*</span></label>
+            <input type="text" th:field="*{codigoBarra}" id="codigoBarra" placeholder="Digite o código de barras"
+                   class="w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none" required />
         </div>
 
-        <!-- Campo Tipo -->
         <div>
-            <label for="tipo" class="block text-sm font-medium text-gray-700 mb-1">
-                Tipo do Item <span class="text-red-500">*</span>
-            </label>
+            <label for="tipo" class="block text-sm font-medium text-gray-700 mb-1">Tipo do Item <span class="text-red-500">*</span></label>
             <select th:field="*{tipo}" id="tipo"
-                    class="form-select w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none">
+                    class="w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none" required>
                 <option value="" disabled selected>Selecione o tipo</option>
-                <option th:each="tipo : ${T(com.example.scanner.model.Item.TipoItem).values()}"
-                        th:value="${tipo}" th:text="${tipo}">
-                </option>
+                <option th:each="tipo : ${T(com.example.scanner.model.Item.TipoItem).values()}" th:value="${tipo}" th:text="${tipo}"></option>
             </select>
-            <p th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"
-               class="text-red-600 text-sm mt-1"></p>
         </div>
 
-        <!-- Botão de envio -->
-        <button type="submit"
-                class="w-full bg-[#15d8fa] text-black p-2 rounded-md hover:bg-[#00abc9] transition mt-4">
-            Cadastrar Item
-        </button>
+        <button type="submit" class="w-full bg-[#15d8fa] text-black p-2 rounded-md hover:bg-[#00abc9] transition mt-4">Cadastrar Item</button>
     </form>
-
-    <!-- Mensagens de erro/sucesso gerais -->
-    <div th:if="${mensagem}"
-         class="mt-4 p-3 rounded-md bg-green-100 border border-green-400 text-green-700">
-        <span th:text="${mensagem}"></span>
-    </div>
-
-    <div th:if="${erro}"
-         class="mt-4 p-3 rounded-md bg-red-100 border border-red-400 text-red-700">
-        <span th:text="${erro}"></span>
-    </div>
 </div>
 
 <script>
     function toggleMenu() {
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
-        const body = document.body;
-
-        const isOpen = sidebar.classList.contains('show');
         sidebar.classList.toggle('show');
         overlay.classList.toggle('show');
-        body.classList.toggle('menu-open', !isOpen);
     }
-
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             const sidebar = document.getElementById('sidebar');
-            if (sidebar.classList.contains('show')) {
-                toggleMenu();
-            }
+            if (sidebar.classList.contains('show')) toggleMenu();
         }
     });
 
-    document.querySelector('form').addEventListener('submit', function(e) {
-        const nomeItem = document.getElementById('nomeItem').value.trim();
-        const codigoBarra = document.getElementById('codigoBarra').value.trim();
-
-        if (!nomeItem || !codigoBarra) {
+    // Impede Enter no campo de código de barras
+    const codigoInput = document.getElementById('codigoBarra');
+    codigoInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
             e.preventDefault();
-            alert('Por favor, preencha todos os campos obrigatórios.');
         }
     });
 </script>

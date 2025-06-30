@@ -77,6 +77,14 @@
             if (sidebar.classList.contains('show')) toggleMenu();
         }
     });
+
+    // Impede Enter no campo de código de barras
+    const codigoInput = document.getElementById('codigoBarra');
+    codigoInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    });
 </script>
 
 </body>

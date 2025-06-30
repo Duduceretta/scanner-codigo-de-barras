@@ -2,7 +2,7 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Devolução de Itens</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" th:href="@{/css/sidebar.css}">
@@ -15,7 +15,7 @@
 <div id="sidebar" class="sidebar">
   <a href="/sistema">Realizar Empréstimo</a>
   <a href="/movimentos/listar-emprestados" class="active">Realizar Devolução</a>
-  <a href="/usuario/cadastro" >Cadastrar Usuário</a>
+  <a href="/usuario/cadastro">Cadastrar Usuário</a>
   <a href="/item/cadastro">Cadastrar Item</a>
   <a href="/sistema/itens-usuarios">Usuários e Itens</a>
   <a href="/movimentos">Registro de Movimentações</a>
@@ -46,12 +46,12 @@
       <td class="p-2 border" th:text="${mov.item.codigoBarra}">-</td>
       <td class="p-2 border" th:text="${#temporals.format(mov.dataHora, 'dd/MM/yyyy HH:mm')}">-</td>
       <td class="p-2 border text-center">
-        <form th:action="@{/movimentos/devolver/{id}(id=${mov.id})}" method="post" style="display: inline;">
-          <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded"
-                  onclick="return confirm('Confirma a devolução deste item?')">
-            Devolver
-          </button>
-        </form>
+        <button type="button"
+                class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded"
+                th:attr="data-id=${mov.id}, data-item=${mov.item.nome}, data-user=${mov.usuario.nome}"
+                onclick="abrirModal(this)">
+          Devolver
+        </button>
       </td>
     </tr>
     </tbody>
@@ -62,6 +62,19 @@
   </div>
 </div>
 
+<!-- Modal -->
+<div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+  <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
+    <h3 id="modalTitle" class="text-lg font-bold text-gray-800 mb-4"></h3>
+    <form id="formDevolver" method="post">
+      <div class="flex justify-end space-x-2">
+        <button type="button" onclick="fecharModal()" class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded">Cancelar</button>
+        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Confirmar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
   function toggleMenu() {
     const sidebar = document.getElementById('sidebar');
@@ -69,20 +82,33 @@
     const body = document.body;
 
     const isOpen = sidebar.classList.contains('show');
-
     sidebar.classList.toggle('show');
     overlay.classList.toggle('show');
     body.classList.toggle('menu-open', !isOpen);
   }
 
-  document.addEventListener('keydown', function (e) {
+  document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
       const sidebar = document.getElementById('sidebar');
-      if (sidebar.classList.contains('show')) {
-        toggleMenu();
-      }
+      if (sidebar.classList.contains('show')) toggleMenu();
+      if (!document.getElementById('modal').classList.contains('hidden')) fecharModal();
     }
   });
+
+  function abrirModal(button) {
+    const itemNome = button.getAttribute('data-item');
+    const usuarioNome = button.getAttribute('data-user');
+    const id = button.getAttribute('data-id');
+
+    document.getElementById('modalTitle').textContent = `Devolver "${itemNome}" para ${usuarioNome}?`;
+    document.getElementById('formDevolver').action = `/movimentos/devolver/${id}`;
+
+    document.getElementById('modal').classList.remove('hidden');
+  }
+
+  function fecharModal() {
+    document.getElementById('modal').classList.add('hidden');
+  }
 </script>
 </body>
 </html>

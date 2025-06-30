@@ -1,42 +1,85 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Editar Item</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/sidebar.css}">
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-gray-800 flex items-center justify-center min-h-screen">
 
-<div class="bg-white p-8 rounded shadow-md w-full max-w-md">
-  <h2 class="text-2xl font-bold mb-4 text-center">Editar Item</h2>
+<button class="menu-btn" onclick="toggleMenu()" title="Menu">&#9776;</button>
 
-  <form th:action="@{/item/editar/{id}(id=${item.id})}" th:object="${item}" method="post">
-    <div class="mb-4">
-      <label class="block text-gray-700">Nome</label>
-      <input th:field="*{nome}" type="text" class="w-full border rounded p-2" required>
+<div id="sidebar" class="sidebar">
+  <a href="/sistema" class="active">Realizar Empréstimo</a>
+  <a href="/movimentos/listar-emprestados">Realizar Devolução</a>
+  <a href="/usuario/cadastro">Cadastrar Usuário</a>
+  <a href="/item/cadastro">Cadastrar Item</a>
+  <a href="/sistema/itens-usuarios">Usuários e Itens</a>
+  <a href="/movimentos">Registro de Movimentações</a>
+</div>
+
+<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+
+<div class="container w-full max-w-md mx-auto bg-white p-8 rounded-2xl shadow-2xl">
+  <img class="mx-auto mb-4 w-32" th:src="@{/imagens/logoUFN.png}" alt="Logo UFN">
+  <h1 class="text-xl font-bold mb-6 text-center text-gray-800">Editar Item</h1>
+
+  <div th:if="${erroCodigo}" class="mb-4 p-3 rounded-md bg-red-100 border border-red-400 text-red-700">
+    <span th:text="${erroCodigo}"></span>
+  </div>
+
+  <form th:action="@{/item/editar/{id}(id=${item.id})}" th:object="${item}" method="post" class="space-y-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Nome <span class="text-red-500">*</span></label>
+      <input th:field="*{nome}" type="text" placeholder="Digite o nome do item" class="w-full mt-1 p-3 border border-gray-300 rounded-md bg-gray-50 focus:ring-2 focus:ring-blue-500" required>
     </div>
 
-    <div class="mb-4">
-      <label class="block text-gray-700">Tipo</label>
-      <select th:field="*{tipo}" class="w-full border rounded p-2">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Tipo <span class="text-red-500">*</span></label>
+      <select th:field="*{tipo}" class="w-full mt-1 p-3 border border-gray-300 rounded-md bg-gray-50 focus:ring-2 focus:ring-blue-500" required>
         <option value="chave">Chave</option>
         <option value="controle">Controle</option>
       </select>
     </div>
 
-    <div class="mb-4">
-      <label class="block text-gray-700">Código de Barras</label>
-      <input th:field="*{codigoBarra}" type="text" class="w-full border rounded p-2" required>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Código de Barras <span class="text-red-500">*</span></label>
+      <input th:field="*{codigoBarra}" id="codigoBarra" type="text" placeholder="Digite o código de barras" class="w-full mt-1 p-3 border border-gray-300 rounded-md bg-gray-50 focus:ring-2 focus:ring-blue-500" required>
     </div>
 
     <input type="hidden" th:field="*{status}" />
 
-    <div class="flex justify-between">
+    <div class="flex justify-between items-center">
       <a href="/sistema/itens-usuarios" class="text-blue-500 hover:underline">Cancelar</a>
-      <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Salvar</button>
+      <button type="submit" class="bg-cyan-400 hover:bg-cyan-500 text-black px-4 py-2 rounded">Salvar</button>
     </div>
   </form>
 </div>
+
+<script>
+  function toggleMenu() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar.classList.contains('show')) toggleMenu();
+    }
+  });
+
+  const codigoInput = document.getElementById('codigoBarra');
+  codigoInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  });
+</script>
 </body>
 </html>

@@ -11,10 +11,8 @@
 
 <body class="bg-[#374151] flex items-center justify-center min-h-screen">
 
-<!-- Botão do menu -->
 <button class="menu-btn" onclick="toggleMenu()" title="Menu">&#9776;</button>
 
-<!-- Menu lateral -->
 <div id="sidebar" class="sidebar">
   <a href="/sistema">Realizar Empréstimo</a>
   <a href="/movimentos/listar-emprestados">Realizar Devolução</a>
@@ -24,16 +22,12 @@
   <a href="/movimentos">Registro de Movimentações</a>
 </div>
 
-<!-- Overlay -->
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
-<!-- Formulário -->
 <div class="form-container w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
   <img th:src="@{/imagens/logoUFN.png}" alt="Logo UFN" class="mx-auto mb-6 w-40 transition-transform hover:scale-105" />
-
   <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Cadastrar Usuário</h2>
 
-  <!-- Alerta de erro -->
   <div th:if="${erroCodigo}" class="mb-4 p-3 rounded-md bg-red-100 border border-red-400 text-red-700">
     <span th:text="${erroCodigo}"></span>
   </div>
@@ -68,7 +62,13 @@
       if (sidebar.classList.contains('show')) toggleMenu();
     }
   });
-</script>
 
+  const codigoInput = document.getElementById('codigoBarra');
+  codigoInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  });
+</script>
 </body>
 </html>

@@ -11,10 +11,8 @@
 
 <body class="bg-gray-800 flex items-center justify-center min-h-screen">
 
-<!-- Botão do menu -->
 <button class="menu-btn" onclick="toggleMenu()" title="Menu">&#9776;</button>
 
-<!-- Sidebar -->
 <div id="sidebar" class="sidebar">
   <a href="/sistema" class="active">Realizar Empréstimo</a>
   <a href="/movimentos/listar-emprestados">Realizar Devolução</a>
@@ -24,16 +22,12 @@
   <a href="/movimentos">Registro de Movimentações</a>
 </div>
 
-<!-- Overlay -->
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
-<!-- Container -->
 <div class="container w-full max-w-md mx-auto bg-white p-8 rounded-2xl shadow-2xl">
   <img class="mx-auto mb-4 w-32" th:src="@{/imagens/logoUFN.png}" alt="Logo UFN">
-
   <h1 class="text-xl font-bold mb-6 text-center text-gray-800">Editar Usuário</h1>
 
-  <!-- Alerta de erro -->
   <div th:if="${erroCodigo}" class="mb-4 p-3 rounded-md bg-red-100 border border-red-400 text-red-700">
     <span th:text="${erroCodigo}"></span>
   </div>
@@ -46,7 +40,7 @@
 
     <div>
       <label class="block text-sm font-medium text-gray-700">Código de Barras <span class="text-red-500">*</span></label>
-      <input th:field="*{codigoBarra}" type="text" placeholder="Digite o código de barras" class="w-full mt-1 p-3 border border-gray-300 rounded-md bg-gray-50 focus:ring-2 focus:ring-blue-500" required>
+      <input th:field="*{codigoBarra}" id="codigoBarra" type="text" placeholder="Digite o código de barras" class="w-full mt-1 p-3 border border-gray-300 rounded-md bg-gray-50 focus:ring-2 focus:ring-blue-500" required>
     </div>
 
     <div class="flex justify-between items-center">
@@ -69,6 +63,13 @@
       if (sidebar.classList.contains('show')) toggleMenu();
     }
   });
-</script>
+
+  const codigoInput = document.getElementById('codigoBarra');
+  codigoInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  });
+</script>'
 </body>
 </html>
