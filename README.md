@@ -297,7 +297,7 @@ GitHub: [@Duduceretta](https://github.com/Duduceretta)
 **Yuri Alexander**  
 Curso de Ciência da Computação – Universidade Franciscana (UFN)  
 
-E-mail: yuri@gmail.com  
+E-mail: yuricostamachado7@gmail.com  
 GitHub: [@yuyukiin](https://github.com/yuyukiin)
 
 ---
@@ -305,5 +305,5 @@ GitHub: [@yuyukiin](https://github.com/yuyukiin)
 **Pedro Henrique Daroda**  
 Curso de Ciência da Computação – Universidade Franciscana (UFN)  
 
-E-mail: pedro@gmail.com  
+E-mail: podesdarodas25@gmail.com  
 GitHub: [@pedr0xh](https://github.com/pedr0xh)
