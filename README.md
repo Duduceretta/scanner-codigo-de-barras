@@ -58,32 +58,90 @@ O diagrama de casos de uso é uma ferramenta visual utilizada para representar a
 
 Este sistema é voltado para o controle de usuários e itens, incluindo o registro de empréstimos e devoluções. O ator principal do sistema é o Porteiro, responsável por gerenciar tanto os usuários quanto os itens cadastrados na portaria da instituição.
 
-## 👤 Ator: Porteiro
-O Porteiro tem acesso completo ao sistema e pode realizar as seguintes ações:
+### **1. Cadastrar Usuário**
+Ator: Porteiro  
+Pré-condição: A tela de cadastro deve estar acessível.  
+Pós-condição: Um novo usuário é salvo no sistema.  
 
-### CadastrarUsuário
-Permite que o porteiro registre um novo usuário no sistema, informando seus dados pessoais e de acesso.
+Base-sequence:  
+O porteiro acessa o formulário de cadastro.  
+O porteiro preenche os dados do novo usuário.  
+O sistema valida as informações e registra o novo usuário.  
+Nota: Caso os dados estejam incompletos ou inválidos, uma mensagem de erro é exibida.  
 
-### EditarUsuário
-O porteiro pode atualizar as informações de um usuário já existente, como nome, e-mail ou status.
+### **2. Editar Usuário**
+Ator: Porteiro  
+Pré-condição: O usuário deve estar previamente cadastrado.  
+Pós-condição: Os dados do usuário são atualizados.  
 
-### ExcluirUsuário
-Remove um usuário do sistema de forma permanente.
+Base-sequence:  
+O porteiro seleciona um usuário da lista.  
+O porteiro altera os campos desejados.  
+O sistema salva as alterações e atualiza os dados.  
+Nota: A edição pode ser limitada para determinados campos.  
 
-### CadastrarItem
-Adiciona um novo item ao acervo do sistema, com dados como nome, tipo, status e código de barras.
+### **3. Excluir Usuário**
+Ator: Porteiro  
+Pré-condição: O usuário deve estar cadastrado.  
+Pós-condição: O usuário é removido do banco de dados.    
 
-### EditarItem
-Permite atualizar as informações de um item já cadastrado, como o nome ou o tipo.
+Base-sequence:  
+O porteiro seleciona o usuário.  
+O porteiro confirma a exclusão.  
+O sistema remove o registro do usuário.  
+Nota: A ação é irreversível.  
 
-### ExcluirItem
-Remove o item do sistema, tornando-o indisponível para empréstimo.
+### **4. Cadastrar Item**
+Ator: Porteiro  
+Pré-condição: A tela de cadastro deve estar disponível.  
+Pós-condição: Um novo item é salvo no sistema com status “disponível”.  
 
-### RealizarEmprestimo
-Registra o empréstimo de um item a um usuário. O item tem seu status alterado para "emprestado".
+Base-sequence:  
+O porteiro acessa o formulário de cadastro de item.  
+Insere os dados como nome, tipo, código de barras, etc.  
+O sistema registra o novo item.  
+Nota: O código de barras deve ser único.  
 
-### RealizarDevolucao
-Registra a devolução de um item emprestado, alterando seu status para "disponível".
+### **5. Editar Item**
+Ator: Porteiro  
+Pré-condição: O item já deve estar cadastrado.  
+Pós-condição: As informações do item são atualizadas.  
+
+Base-sequence:  
+O porteiro localiza e seleciona o item.  
+Modifica os dados necessários.  
+O sistema salva as mudanças.  
+
+### **6. Excluir Item**
+Ator: Porteiro  
+Pré-condição: O item deve estar cadastrado e não emprestado.  
+Pós-condição: O item é excluído do sistema.  
+
+Base-sequence:  
+O porteiro seleciona o item na interface.  
+Confirma a exclusão.  
+O sistema remove o item.  
+
+### **7. Realizar Empréstimo**
+Ator: Porteiro  
+Pré-condição: O usuário e o item devem estar cadastrados; o item deve estar disponível.  
+Pós-condição: O item é marcado como “emprestado” e a movimentação registrada.  
+
+Base-sequence:  
+O porteiro escaneia o código do usuário.  
+Em seguida, escaneia o código do item.  
+O sistema valida a disponibilidade e registra o empréstimo.  
+Nota: O sistema exibe mensagem de erro caso o item já esteja emprestado.
+
+### **8. Realizar Devolução**
+Ator: Porteiro  
+Pré-condição: O item deve estar emprestado.  
+Pós-condição: O item é marcado como “disponível” e a devolução registrada.  
+
+Base-sequence:  
+O porteiro escaneia o código do usuário.  
+Escaneia o código do item.  
+O sistema atualiza o status e registra a devolução.  
 
 ---
 
