@@ -25,8 +25,13 @@ public class ItemController {
     }
 
     @PostMapping("/cadastrar")
-    public String salvarCadastroItem(@ModelAttribute Item item) {
-        itemService.salvar(item);
+    public String salvarCadastroItem(@ModelAttribute Item item, RedirectAttributes redirectAttributes) {
+        try {
+            itemService.salvar(item);
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("erroCodigo", "Já existe um item com este código de barras!");
+            return "redirect:/item/cadastro";
+        }
         return "redirect:/item/cadastro";
     }
 
@@ -39,13 +44,17 @@ public class ItemController {
     }
 
     @PostMapping("/editar/{id}")
-    public String salvarEdicaoItem(@PathVariable Integer id, @Valid Item item, BindingResult result) {
+    public String salvarEdicaoItem(@PathVariable Integer id, @Valid Item item, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             item.setId(id);
             return "scanner/editar_item";
         }
-
-        itemService.salvar(item);
+        try {
+            itemService.salvar(item);
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("erroCodigo", "Já existe um item com este código de barras!");
+            return "redirect:/item/editar/" + id;
+        }
         return "redirect:/sistema/itens-usuarios";
     }
 

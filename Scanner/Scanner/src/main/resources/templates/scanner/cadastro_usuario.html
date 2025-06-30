@@ -29,84 +29,43 @@
 
 <!-- Formulário -->
 <div class="form-container w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
-  <img th:src="@{/imagens/logoUFN.png}" alt="Logo UFN"
-       class="mx-auto mb-6 w-40 transition-transform hover:scale-105" />
+  <img th:src="@{/imagens/logoUFN.png}" alt="Logo UFN" class="mx-auto mb-6 w-40 transition-transform hover:scale-105" />
 
-  <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">
-    Cadastrar Usuário
-  </h2>
+  <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Cadastrar Usuário</h2>
+
+  <!-- Alerta de erro -->
+  <div th:if="${erroCodigo}" class="mb-4 p-3 rounded-md bg-red-100 border border-red-400 text-red-700">
+    <span th:text="${erroCodigo}"></span>
+  </div>
 
   <form th:action="@{/usuario/cadastrar}" th:object="${usuario}" method="post" class="space-y-5">
-
     <div>
-      <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">
-        Nome Completo <span class="text-red-500">*</span>
-      </label>
-      <input type="text" th:field="*{nome}" id="nome" required
-             placeholder="Digite o nome completo"
+      <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">Nome Completo <span class="text-red-500">*</span></label>
+      <input type="text" th:field="*{nome}" id="nome" required placeholder="Digite o nome completo"
              class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-400 focus:outline-none" />
     </div>
 
     <div>
-      <label for="codigoBarra" class="block text-sm font-medium text-gray-700 mb-1">
-        Código de Barras <span class="text-red-500">*</span>
-      </label>
-      <input type="text" th:field="*{codigoBarra}" id="codigoBarra" required
-             placeholder="Digite o código de barras"
+      <label for="codigoBarra" class="block text-sm font-medium text-gray-700 mb-1">Código de Barras <span class="text-red-500">*</span></label>
+      <input type="text" th:field="*{codigoBarra}" id="codigoBarra" required placeholder="Digite o código de barras"
              class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-400 focus:outline-none" />
     </div>
 
-    <button type="submit"
-            class="w-full bg-[#15d8fa] text-black p-2 rounded-md hover:bg-[#00abc9] transition mt-4">
-      Cadastrar Usuário
-    </button>
+    <button type="submit" class="w-full bg-[#15d8fa] text-black p-2 rounded-md hover:bg-[#00abc9] transition mt-4">Cadastrar Usuário</button>
   </form>
-
-  <!-- Mensagem de sucesso -->
-  <div th:if="${mensagem}"
-       class="mt-4 p-3 rounded-md bg-green-100 border border-green-400 text-green-700">
-    <span th:text="${mensagem}"></span>
-  </div>
-
-  <!-- Mensagem de erro -->
-  <div th:if="${erro}"
-       class="mt-4 p-3 rounded-md bg-red-100 border border-red-400 text-red-700">
-    <span th:text="${erro}"></span>
-  </div>
 </div>
 
-<!-- Scripts -->
 <script>
   function toggleMenu() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
-    const body = document.body;
-
-    const isOpen = sidebar.classList.contains('show');
-
     sidebar.classList.toggle('show');
     overlay.classList.toggle('show');
-    body.classList.toggle('menu-open', !isOpen);
   }
-
-  // Fechar menu com ESC
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
       const sidebar = document.getElementById('sidebar');
-      if (sidebar.classList.contains('show')) {
-        toggleMenu();
-      }
-    }
-  });
-
-  // Validação de formulário
-  document.querySelector('form').addEventListener('submit', function(e) {
-    const nome = document.getElementById('nome').value.trim();
-    const codigoBarra = document.getElementById('codigoBarra').value.trim();
-
-    if (!nome || !codigoBarra) {
-      e.preventDefault();
-      alert('Por favor, preencha todos os campos obrigatórios.');
+      if (sidebar.classList.contains('show')) toggleMenu();
     }
   });
 </script>

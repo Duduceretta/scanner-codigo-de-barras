@@ -25,8 +25,13 @@ public class UsuarioController {
     }
 
     @PostMapping("/cadastrar")
-    public String salvarCadastro(@ModelAttribute Usuario usuario) {
-        usuarioService.salvar(usuario);
+    public String salvarCadastro(@ModelAttribute Usuario usuario, RedirectAttributes redirectAttributes) {
+        try {
+            usuarioService.salvar(usuario);
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("erroCodigo", "Já existe um usuário com este código de barras!");
+            return "redirect:/usuario/cadastro";
+        }
         return "redirect:/usuario/cadastro";
     }
 
@@ -39,12 +44,17 @@ public class UsuarioController {
     }
 
     @PostMapping("/editar/{id}")
-    public String salvarEdicaoUsuario(@PathVariable Integer id, @Valid Usuario usuario, BindingResult result) {
+    public String salvarEdicaoUsuario(@PathVariable Integer id, @Valid Usuario usuario, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             usuario.setId(id);
             return "scanner/editar_usuario";
         }
-        usuarioService.salvar(usuario);
+        try {
+            usuarioService.salvar(usuario);
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("erroCodigo", "Já existe um usuário com este código de barras!");
+            return "redirect:/usuario/editar/" + id;
+        }
         return "redirect:/sistema/itens-usuarios";
     }
 
