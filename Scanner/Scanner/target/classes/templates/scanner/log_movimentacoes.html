@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro de Movimentações</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+</head>
+
+<body class="bg-[#374151] flex items-center justify-center min-h-screen">
+
+<!-- Botão do menu -->
+<button class="menu-btn" onclick="toggleMenu()" title="Menu">&#9776;</button>
+
+<!-- Menu lateral -->
+<div id="sidebar" class="sidebar">
+  <a href="/sistema">Realizar Empréstimo</a>
+  <a href="/movimentos/listar-emprestados">Realizar Devolução</a>
+  <a href="/usuario/cadastro">Cadastrar Usuário</a>
+  <a href="/item/cadastro">Cadastrar Item</a>
+  <a href="/sistema/itens-usuarios">Usuários e Itens</a>
+  <a href="/movimentos" class="active">Registro de Movimentações</a>
+</div>
+
+<!-- Overlay -->
+<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+
+<!-- Container branco centralizado -->
+<div class="w-full max-w-6xl bg-white p-8 rounded-2xl shadow-xl space-y-6">
+
+  <img class="mx-auto mb-6 w-40 transition-transform hover:scale-105" th:src="@{/imagens/logoUFN.png}" alt="Logo UFN">
+
+  <h2 class="text-2xl font-bold text-center text-gray-800">Registro de Movimentações</h2>
+
+  <div id="feedback" class="text-center font-semibold mt-2"></div>
+
+  <input
+          type="text"
+          id="filtro"
+          placeholder="Filtrar por nome ou código..."
+          class="w-full p-3 border border-gray-300 rounded-md mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-400"
+  >
+
+  <table class="w-full table-auto border border-gray-300 text-sm text-left">
+    <thead class="bg-gray-100 text-gray-700">
+    <tr>
+      <th class="p-2 border">Usuário Responsável</th>
+      <th class="p-2 border">Código Usuário</th>
+      <th class="p-2 border">Item</th>
+      <th class="p-2 border">Código Item</th>
+      <th class="p-2 border">Data/Hora</th>
+      <th class="p-2 border">Ação</th>
+    </tr>
+    </thead>
+
+    <tbody th:if="${movimentos}" th:each="mov : ${movimentos}" id="corpoTabela">
+    <tr>
+      <td class="p-2 border" th:text="${mov.usuario.nome}">Nome do Usuário</td>
+      <td class="p-2 border" th:text="${mov.usuario.codigoBarra}">Código do Usuário</td>
+      <td class="p-2 border" th:text="${mov.item.nome}">Nome do Item</td>
+      <td class="p-2 border" th:text="${mov.item.codigoBarra}">Código do Item</td>
+      <td class="p-2 border" th:text="${mov.dataFormatada}">Data/Hora</td>
+      <td class="p-2 border" th:text="${mov.tipo}">Ação</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div th:if="${#lists.isEmpty(movimentos)}" id="sem-dados" class="text-center text-gray-500 mt-6">
+    Nenhuma movimentação registrada no momento.
+  </div>
+</div>
+
+<script>
+  function toggleMenu() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const body = document.body;
+
+    const isOpen = sidebar.classList.contains('show');
+
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+    body.classList.toggle('menu-open', !isOpen);
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar.classList.contains('show')) {
+        toggleMenu();
+      }
+    }
+  });
+
+  document.getElementById("filtro").addEventListener("input", function () {
+    const filtro = this.value.toLowerCase();
+    const linhas = document.querySelectorAll("#corpoTabela tr");
+
+    linhas.forEach(linha => {
+      const textoLinha = linha.textContent.toLowerCase();
+      linha.style.display = textoLinha.includes(filtro) ? "" : "none";
+    });
+  });
+</script>
+
+</body>
+</html>

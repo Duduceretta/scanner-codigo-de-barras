@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leitura de Código de Barras - Portaria UFN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+</head>
+
+<body class="bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center min-h-screen">
+
+<button class="menu-btn" onclick="toggleMenu()" title="Menu">&#9776;</button>
+
+<div id="sidebar" class="sidebar">
+  <a href="/sistema" class="active">Realizar Empréstimo</a>
+  <a href="/movimentos/listar-emprestados">Realizar Devolução</a>
+  <a href="/usuario/cadastro">Cadastrar Usuário</a>
+  <a href="/item/cadastro">Cadastrar Item</a>
+  <a href="/sistema/itens-usuarios">Usuários e Itens</a>
+  <a href="/movimentos">Registro de Movimentações</a>
+</div>
+
+<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+
+<div class="container w-full max-w-sm md:max-w-md mx-auto bg-white p-8 rounded-2xl shadow-2xl">
+  <img class="mx-auto mb-6 w-40 transition-transform hover:scale-105" th:src="@{/imagens/logoUFN.png}" alt="Logo UFN">
+  <h1 class="text-2xl font-bold mb-4 text-center text-gray-800">Leitura de Código de Barras</h1>
+  <p class="text-center text-gray-600 mb-6">
+    Aponte o leitor para o código do <strong>item</strong> e do <strong>usuário</strong>.
+  </p>
+
+  <form id="formMovimentar" class="space-y-4">
+    <div>
+      <label for="codigoUsuario" class="block text-sm font-medium text-gray-700">
+        Código do Usuário: <span class="text-red-500">*</span>
+      </label>
+      <input type="text" name="codigoUsuario" id="codigoUsuario"
+             placeholder="Aguardando leitura do cartão..."
+             class="form-input w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required />
+    </div>
+
+    <div>
+      <label for="codigoItem" class="block text-sm font-medium text-gray-700">
+        Código do Item: <span class="text-red-500">*</span>
+      </label>
+      <input type="text" name="codigoItem" id="codigoItem"
+             placeholder="Aguardando leitura da etiqueta..."
+             class="form-input w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required />
+    </div>
+
+    <div class="mt-2 mb-4">
+      <label for="dataHora" class="block text-sm font-medium text-gray-700">Data e Hora:</label>
+      <input type="text" name="dataHora" id="dataHora" readonly
+             class="form-input w-full mt-1 p-3 border border-gray-300 rounded-md bg-gray-100" />
+    </div>
+
+    <button type="submit" class="botao-movimentacao">
+      Confirmar Movimentação
+    </button>
+  </form>
+
+  <div id="feedback" class="mt-4 text-center font-semibold"></div>
+</div>
+
+<script>
+  function toggleMenu() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const body = document.body;
+    const isOpen = sidebar.classList.contains('show');
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+    body.classList.toggle('menu-open', !isOpen);
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar.classList.contains('show')) toggleMenu();
+    }
+  });
+
+  function atualizarDataHora() {
+    const agora = new Date();
+    document.getElementById("dataHora").value = agora.toLocaleString("pt-BR", {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    atualizarDataHora();
+    setInterval(atualizarDataHora, 60000);
+  });
+
+  document.getElementById("formMovimentar").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const codigoUsuarioInput = document.getElementById("codigoUsuario");
+    const codigoItemInput = document.getElementById("codigoItem");
+    const feedback = document.getElementById("feedback");
+
+    const codigoUsuario = codigoUsuarioInput.value.trim();
+    const codigoItem = codigoItemInput.value.trim();
+
+    if (!codigoUsuario || !codigoItem) {
+      feedback.textContent = "Preencha todos os campos obrigatórios.";
+      feedback.className = "mt-4 text-center font-semibold text-red-600";
+      return;
+    }
+
+    const formData = new URLSearchParams();
+    formData.append("codigoUsuario", codigoUsuario);
+    formData.append("codigoItem", codigoItem);
+
+    try {
+      const response = await fetch("/movimentos/confirmar", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData
+      });
+
+      const msg = await response.text();
+
+      if (response.ok) {
+        feedback.textContent = "✅ Item emprestado com sucesso!";
+        feedback.className = "mt-4 text-center font-semibold text-green-600 bg-green-100 border border-green-300 p-2 rounded";
+        codigoUsuarioInput.value = "";
+        codigoItemInput.value = "";
+        codigoUsuarioInput.focus();
+        atualizarDataHora();
+      } else {
+        feedback.textContent = msg;
+        feedback.className = "mt-4 text-center font-semibold text-red-600 bg-red-100 border border-red-300 p-2 rounded";
+      }
+
+    } catch (error) {
+      feedback.textContent = "Erro na comunicação com o servidor.";
+      feedback.className = "mt-4 text-center font-semibold text-red-600 bg-red-100 border border-red-300 p-2 rounded";
+    }
+  });
+
+  const codigoUsuarioInput = document.getElementById('codigoUsuario');
+  const codigoItemInput = document.getElementById('codigoItem');
+
+  codigoUsuarioInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  });
+
+  codigoItemInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  });
+</script>
+</body>
+</html>

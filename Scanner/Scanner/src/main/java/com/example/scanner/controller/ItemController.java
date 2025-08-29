@@ -19,19 +19,16 @@ public class ItemController {
     private ItemService itemService;
 
     @GetMapping("/cadastro")
-    public String mostrarFormularioItem(Model model) {
+    public String mostrarFormularioCadastro(Model model) {
         model.addAttribute("item", new Item());
         return "scanner/cadastro_item";
     }
 
     @PostMapping("/cadastrar")
-    public String salvarCadastroItem(@ModelAttribute Item item, RedirectAttributes redirectAttributes) {
-        try {
-            itemService.salvar(item);
-        } catch (DataIntegrityViolationException e) {
-            redirectAttributes.addFlashAttribute("erroCodigo", "Já existe um item com este código de barras!");
-            return "redirect:/item/cadastro";
-        }
+    public String registrarNovoItem(@ModelAttribute Item item, RedirectAttributes redirectAttributes) {
+        itemService.salvar(item);
+        redirectAttributes.addFlashAttribute("mensagemSucesso", "Item cadastrado com sucesso!");
+
         return "redirect:/item/cadastro";
     }
 
@@ -44,28 +41,23 @@ public class ItemController {
     }
 
     @PostMapping("/editar/{id}")
-    public String salvarEdicaoItem(@PathVariable Integer id, @Valid Item item, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String atualizarItem(@PathVariable Integer id, @Valid Item item, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             item.setId(id);
             return "scanner/editar_item";
         }
-        try {
-            itemService.salvar(item);
-        } catch (DataIntegrityViolationException e) {
-            redirectAttributes.addFlashAttribute("erroCodigo", "Já existe um item com este código de barras!");
-            return "redirect:/item/editar/" + id;
-        }
+
+        itemService.salvar(item);
+        redirectAttributes.addFlashAttribute("mensagemSucesso", "Item atualizado com sucesso!");
+
         return "redirect:/sistema/itens-usuarios";
     }
 
     @GetMapping("/excluir/{id}")
     public String excluirItem(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
-        try {
-            itemService.excluir(id);
-            redirectAttributes.addFlashAttribute("mensagemSucesso", "Item excluído com sucesso!");
-        } catch (DataIntegrityViolationException e) {
-            redirectAttributes.addFlashAttribute("mensagemErro", "Não é possível excluir este item, pois há movimentações vinculadas a ele.");
-        }
+        itemService.excluir(id);
+        redirectAttributes.addFlashAttribute("mensagemSucesso", "Item excluído com sucesso!");
+
         return "redirect:/sistema/itens-usuarios";
     }
 }

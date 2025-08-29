@@ -20,7 +20,7 @@
     <a href="/movimentos/listar-emprestados">Realizar Devolução</a>
     <a href="/usuario/cadastro">Cadastrar Usuário</a>
     <a href="/item/cadastro" class="active">Cadastrar Item</a>
-    <a href="/sistema/itens-usuarios">Usuários e Itens</a>
+    <a href="/sistema/itens-usuarios">Usuários e Items</a>
     <a href="/movimentos">Registro de Movimentações</a>
 </div>
 
@@ -34,8 +34,8 @@
     <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Cadastrar Item</h2>
 
     <!-- Alerta de erro -->
-    <div th:if="${erroCodigo}" class="mb-4 p-3 rounded-md bg-red-100 border border-red-400 text-red-700">
-        <span th:text="${erroCodigo}"></span>
+    <div th:if="${mensagemErro}" class="mb-4 p-3 rounded-md bg-red-100 border border-red-400 text-red-700">
+        <span th:text="${mensagemErro}"></span>
     </div>
 
     <form th:action="@{/item/cadastrar}" th:object="${item}" method="post" class="space-y-5">
@@ -46,8 +46,8 @@
         </div>
 
         <div>
-            <label for="codigoBarra" class="block text-sm font-medium text-gray-700 mb-1">Código de Barras <span class="text-red-500">*</span></label>
-            <input type="text" th:field="*{codigoBarra}" id="codigoBarra" placeholder="Digite o código de barras"
+            <label for="codigoDeBarras" class="block text-sm font-medium text-gray-700 mb-1">Código de Barras <span class="text-red-500">*</span></label>
+            <input type="text" th:field="*{codigoDeBarras}" id="codigoDeBarras" placeholder="Digite o código de barras"
                    class="w-full mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none" required />
         </div>
 
@@ -86,6 +86,5 @@
         }
     });
 </script>
-
 </body>
 </html>

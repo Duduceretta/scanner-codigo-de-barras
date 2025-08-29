@@ -12,20 +12,21 @@
   <img th:src="@{/imagens/logoUFN.png}"
        alt="Logo UFN" class="mx-auto mb-6 w-40" />
   <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Entrar na Conta - Porteiro</h2>
-  <div th:if="${erro}" class="text-red-600 text-center font-medium">
-    <p th:text="${erro}"></p>
+
+  <div th:if="${mensagemErro}" class="text-red-600 text-center font-medium">
+    <p th:text="${mensagemErro}"></p>
   </div>
 
-  <form class="space-y-5" th:action="@{/login}" method="post">
+  <form id="loginForm" class="space-y-5" th:action="@{/login}" method="post">
     <div>
-      <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
-      <input type="email" id="email" name="email" required
+      <label for="emailInput" class="block text-sm font-medium text-gray-700">E-mail</label>
+      <input type="email" id="emailInput" name="emailFornecido" required
              class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-400 focus:outline-none" />
     </div>
 
     <div>
-      <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
-      <input type="password" id="password" name="password" required
+      <label for="senhaInput" class="block text-sm font-medium text-gray-700">Senha</label>
+      <input type="password" id="senhaInput" name="senhaFornecida" required
              class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-400 focus:outline-none" />
     </div>
 
@@ -49,27 +50,26 @@
 </div>
 
 <script>
-  const emailInput = document.getElementById("email");
+  const emailInput = document.getElementById("emailInput");
   const lembrarCheck = document.getElementById("lembrar");
+  const form = document.getElementById("loginForm");
 
   // Preenche o campo com e-mail salvo, se existir
   window.addEventListener("DOMContentLoaded", () => {
-    const salvo = localStorage.getItem("emailSalvo");
-    if (salvo) {
-      emailInput.value = salvo;
+    const emailSalvo = localStorage.getItem("emailSalvo");
+    if (emailSalvo) {
+      emailInput.value = emailSalvo;
       lembrarCheck.checked = true;
     }
   });
 
   // Ao enviar o formulário
-  document.getElementById("loginForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    if (lembrarCheck.checked) {
-      localStorage.setItem("emailSalvo", emailInput.value);
-    } else {
-      localStorage.removeItem("emailSalvo");
-    }
+  form.addEventListener("submit", function () {
+      if (lembrarCheck.checked) {
+          localStorage.setItem("emailSalvo", emailInput.value);
+      } else {
+          localStorage.removeItem("emailSalvo");
+      }
   });
 </script>
 </body>

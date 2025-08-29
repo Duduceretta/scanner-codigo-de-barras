@@ -33,22 +33,22 @@ public class AcessoController {
 
     // Verifica se o login esta correto, e entra no sistema
     @PostMapping("/login")
-    public String processarLogin(@RequestParam String email,
-                                 @RequestParam String password,
-                                 HttpSession session,
-                                 RedirectAttributes redirectAttributes) {
+    public String autenticarPorteiro(@RequestParam String emailFornecido,
+                                     @RequestParam String senhaFornecida,
+                                     HttpSession session,
+                                     RedirectAttributes redirectAttributes) {
 
-        Optional<Porteiro> porteiroOpt = porteiroService.buscarPorEmail(email);
+        Optional<Porteiro> porteiroEncontrado = porteiroService.buscarPorEmail(emailFornecido);
 
-        if (porteiroOpt.isEmpty()) {
-            redirectAttributes.addFlashAttribute("erro", "E-mail não encontrado");
+        if (porteiroEncontrado.isEmpty()) {
+            redirectAttributes.addFlashAttribute("mensagemErro", "E-mail não encontrado");
             return "redirect:/login";
         }
 
-        Porteiro porteiro = porteiroOpt.get();
+        Porteiro porteiro = porteiroEncontrado.get();
 
-        if (!porteiro.getSenha().equals(password)) {
-            redirectAttributes.addFlashAttribute("erro", "Senha incorreta");
+        if (!porteiro.getSenha().equals(senhaFornecida)) {
+            redirectAttributes.addFlashAttribute("mensagemErro", "Senha incorreta");
             return "redirect:/login";
         }
 
@@ -66,13 +66,14 @@ public class AcessoController {
 
     // Salva o cadastro no banco e redireciona para o login
     @PostMapping("/cadastrar")
-    public String processarCadastro(@ModelAttribute Porteiro porteiro,
-                                 RedirectAttributes redirectAttributes) {
+    public String registrarNovoPorteiro(@ModelAttribute Porteiro porteiro,
+                                        RedirectAttributes redirectAttributes) {
 
         // Verifica se o e-mail já está cadastrado
-        Optional<Porteiro> existente = porteiroService.buscarPorEmail(porteiro.getEmail());
-        if (existente.isPresent()) {
-            redirectAttributes.addFlashAttribute("erro", "Já existe uma conta com este e-mail.");
+        Optional<Porteiro> porteiroEncontrado = porteiroService.buscarPorEmail(porteiro.getEmail());
+
+        if (porteiroEncontrado.isPresent()) {
+            redirectAttributes.addFlashAttribute("mensagemErro", "Já existe uma conta com este e-mail.");
             return "redirect:/cadastro";
         }
 

@@ -1,5 +1,6 @@
 package com.example.scanner.service;
 
+import com.example.scanner.exception.CustomException;
 import com.example.scanner.model.Item;
 import com.example.scanner.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,12 @@ public class ItemService {
     }
 
     public Item salvar(Item item) {
+        if (item.getId() == null) {
+            if (itemRepository.findByCodigoDeBarras(item.getCodigoDeBarras()).isPresent()) {
+                throw new CustomException("Já existe um item com este código de barras!", "/item/cadastro");
+            }
+        }
+
         return itemRepository.save(item);
     }
 
@@ -31,6 +38,6 @@ public class ItemService {
     }
 
     public Optional<Item> buscarPorCodigoBarra(String codigo) {
-        return itemRepository.findByCodigoBarra(codigo);
+        return itemRepository.findByCodigoDeBarras(codigo);
     }
 }

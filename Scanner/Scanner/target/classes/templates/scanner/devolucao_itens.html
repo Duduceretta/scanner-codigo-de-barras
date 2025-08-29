@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Devolução de Itens</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+</head>
+
+<body class="bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center min-h-screen">
+
+<button class="menu-btn" onclick="toggleMenu()" title="Menu">&#9776;</button>
+
+<div id="sidebar" class="sidebar">
+  <a href="/sistema">Realizar Empréstimo</a>
+  <a href="/movimentos/listar-emprestados" class="active">Realizar Devolução</a>
+  <a href="/usuario/cadastro">Cadastrar Usuário</a>
+  <a href="/item/cadastro">Cadastrar Item</a>
+  <a href="/sistema/itens-usuarios">Usuários e Itens</a>
+  <a href="/movimentos">Registro de Movimentações</a>
+</div>
+
+<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+
+<div class="w-full max-w-6xl bg-white p-8 rounded-2xl shadow-2xl space-y-10">
+  <h2 class="text-2xl font-bold text-center text-gray-800">Devolução de Itens</h2>
+
+  <table class="w-full table-auto border border-gray-300 text-sm text-left">
+    <thead class="bg-gray-100 text-gray-700">
+    <tr>
+      <th class="p-2 border">Usuário</th>
+      <th class="p-2 border">Código do Usuário</th>
+      <th class="p-2 border">Item</th>
+      <th class="p-2 border">Código do Item</th>
+      <th class="p-2 border">Data do Empréstimo</th>
+      <th class="p-2 border text-center">Ação</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="mov : ${movimentos}">
+      <td class="p-2 border" th:text="${mov.usuario.nome}">-</td>
+      <td class="p-2 border" th:text="${mov.usuario.codigoBarra}">-</td>
+      <td class="p-2 border" th:text="${mov.item.nome}">-</td>
+      <td class="p-2 border" th:text="${mov.item.codigoBarra}">-</td>
+      <td class="p-2 border" th:text="${#temporals.format(mov.dataHora, 'dd/MM/yyyy HH:mm')}">-</td>
+      <td class="p-2 border text-center">
+        <button type="button"
+                class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded"
+                th:attr="data-id=${mov.id}, data-item=${mov.item.nome}"
+                onclick="abrirModal(this)">
+          Devolver
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div th:if="${#lists.isEmpty(movimentos)}" class="text-center text-gray-500 mt-4">
+    Nenhum item está emprestado no momento.
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+  <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
+    <h3 id="modalTitle" class="text-lg font-bold text-gray-800 mb-4"></h3>
+    <form id="formDevolver" method="post">
+      <div class="flex justify-end space-x-2">
+        <button type="button" onclick="fecharModal()" class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded">Cancelar</button>
+        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Confirmar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function toggleMenu() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const body = document.body;
+
+    const isOpen = sidebar.classList.contains('show');
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+    body.classList.toggle('menu-open', !isOpen);
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar.classList.contains('show')) toggleMenu();
+      if (!document.getElementById('modal').classList.contains('hidden')) fecharModal();
+    }
+  });
+
+  function abrirModal(button) {
+    const itemNome = button.getAttribute('data-item');
+    const id = button.getAttribute('data-id');
+
+    document.getElementById('modalTitle').textContent = `Devolver "${itemNome}"?`;
+    document.getElementById('formDevolver').action = `/movimentos/devolver/${id}`;
+
+    document.getElementById('modal').classList.remove('hidden');
+  }
+
+  function fecharModal() {
+    document.getElementById('modal').classList.add('hidden');
+  }
+</script>
+</body>
+</html>

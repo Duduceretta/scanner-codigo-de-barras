@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
-    Optional<Item> findByCodigoBarra(String codigoBarra);
+    Optional<Item> findByCodigoDeBarras(String codigoBarra);
 }
