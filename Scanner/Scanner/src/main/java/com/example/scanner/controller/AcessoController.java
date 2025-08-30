@@ -1,6 +1,7 @@
 package com.example.scanner.controller;
 
 import com.example.scanner.dto.LoginDTO;
+import com.example.scanner.dto.RegistroDTO;
 import com.example.scanner.model.Porteiro;
 import com.example.scanner.service.PorteiroService;
 import jakarta.servlet.http.HttpSession;
@@ -9,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
@@ -35,7 +34,7 @@ public class AcessoController {
     // Verifica se o login esta correto, e entra no sistema
     @PostMapping("/login")
     public String autenticarPorteiro(@ModelAttribute LoginDTO loginDTO, HttpSession session) {
-        Porteiro porteiroLogado = porteiroService.autenticar(loginDTO);
+        Porteiro porteiroLogado = porteiroService.autenticarPorteiro(loginDTO);
         session.setAttribute("usuarioLogado", porteiroLogado);
         return "redirect:/sistema";
     }
@@ -43,25 +42,14 @@ public class AcessoController {
     // Página de cadastro de conta
     @GetMapping("/cadastro")
     public String mostrarFormularioCadastro(Model model) {
-        model.addAttribute("porteiro", new Porteiro());
+        model.addAttribute("registroDTO", new RegistroDTO());
         return "acesso/cadastro";
     }
 
     // Salva o cadastro no banco e redireciona para o login
     @PostMapping("/cadastrar")
-    public String registrarNovoPorteiro(@ModelAttribute Porteiro porteiro,
-                                        RedirectAttributes redirectAttributes) {
-
-        // Verifica se o e-mail já está cadastrado
-        Optional<Porteiro> porteiroEncontrado = porteiroService.buscarPorEmail(porteiro.getEmail());
-
-        if (porteiroEncontrado.isPresent()) {
-            redirectAttributes.addFlashAttribute("mensagemErro", "Já existe uma conta com este e-mail.");
-            return "redirect:/cadastro";
-        }
-
-        // Cadastrado bem-sucedido
-        porteiroService.salvar(porteiro);
+    public String registrarNovoPorteiro(@ModelAttribute RegistroDTO registroDTO) {
+        porteiroService.registrarNovoPorteiro(registroDTO);
         return "redirect:/login";
     }
 

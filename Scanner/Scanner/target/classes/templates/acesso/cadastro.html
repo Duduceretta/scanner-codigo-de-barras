@@ -18,12 +18,12 @@
   </h2>
 
   <!-- Mensagem de erro -->
-  <div th:if="${erro}"
+  <div th:if="${mensagemErro}"
        class="mb-4 p-3 rounded-md bg-red-100 border border-red-400 text-red-700 text-sm text-center">
-    <span th:text="${erro}"></span>
+    <span th:text="${mensagemErro}"></span>
   </div>
 
-  <form class="space-y-5" th:action="@{/cadastrar}" method="post" th:object="${porteiro}">
+  <form class="space-y-5" th:action="@{/cadastrar}" method="post" th:object="${registroDTO}">
 
     <div>
       <label for="nome" class="block text-sm font-medium text-gray-700">
@@ -53,7 +53,7 @@
       <label for="confirmPassword" class="block text-sm font-medium text-gray-700">
         Confirmar Senha
       </label>
-      <input type="password" id="confirmPassword" name="confirmPassword" required
+      <input type="password" id="confirmPassword" th:field="*{senhaConfirmacao}" required
              class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-400 focus:outline-none" />
     </div>
 
@@ -69,18 +69,6 @@
   </p>
 
 </div>
-
-<script>
-  document.querySelector("form").addEventListener("submit", function (e) {
-    const senha = document.getElementById("password").value;
-    const confirmar = document.getElementById("confirmPassword").value;
-
-    if (senha !== confirmar) {
-      e.preventDefault();
-      alert("As senhas não coincidem!");
-    }
-  });
-</script>
 
 </body>
 </html>

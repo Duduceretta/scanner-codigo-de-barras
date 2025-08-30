@@ -20,4 +20,16 @@ public class GlobalExceptionHandler {
         return "redirect:/login";
     }
 
+    @ExceptionHandler(EmailJaCadastradoException.class)
+    public String handleEmailJaCadastradoException(EmailJaCadastradoException exception, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("mensagemErro", exception.getMessage());
+        return "redirect:/cadastro";
+    }
+
+    @ExceptionHandler(SenhasNaoCoincidemExcepetion.class)
+    public String handleSenhasNaoCoincidem(SenhasNaoCoincidemExcepetion exception, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("mensagemErro", exception.getMessage());
+        return "redirect:/cadastro";
+    }
+
 }
