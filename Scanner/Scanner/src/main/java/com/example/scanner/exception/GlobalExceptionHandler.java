@@ -14,4 +14,10 @@ public class GlobalExceptionHandler {
         return "redirect:" + exception.getRedirectUrl();
     }
 
+    @ExceptionHandler(AutenticacaoException.class)
+    public String handleAutenticacaoException(AutenticacaoException exception, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("mensagemErro", exception.getMessage());
+        return "redirect:/login";
+    }
+
 }

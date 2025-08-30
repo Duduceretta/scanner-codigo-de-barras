@@ -1,5 +1,6 @@
 package com.example.scanner.controller;
 
+import com.example.scanner.dto.LoginDTO;
 import com.example.scanner.model.Porteiro;
 import com.example.scanner.service.PorteiroService;
 import jakarta.servlet.http.HttpSession;
@@ -33,27 +34,9 @@ public class AcessoController {
 
     // Verifica se o login esta correto, e entra no sistema
     @PostMapping("/login")
-    public String autenticarPorteiro(@RequestParam String emailFornecido,
-                                     @RequestParam String senhaFornecida,
-                                     HttpSession session,
-                                     RedirectAttributes redirectAttributes) {
-
-        Optional<Porteiro> porteiroEncontrado = porteiroService.buscarPorEmail(emailFornecido);
-
-        if (porteiroEncontrado.isEmpty()) {
-            redirectAttributes.addFlashAttribute("mensagemErro", "E-mail não encontrado");
-            return "redirect:/login";
-        }
-
-        Porteiro porteiro = porteiroEncontrado.get();
-
-        if (!porteiro.getSenha().equals(senhaFornecida)) {
-            redirectAttributes.addFlashAttribute("mensagemErro", "Senha incorreta");
-            return "redirect:/login";
-        }
-
-        // Login bem-sucedido
-        session.setAttribute("usuarioLogado", porteiro);
+    public String autenticarPorteiro(@ModelAttribute LoginDTO loginDTO, HttpSession session) {
+        Porteiro porteiroLogado = porteiroService.autenticar(loginDTO);
+        session.setAttribute("usuarioLogado", porteiroLogado);
         return "redirect:/sistema";
     }
 
