@@ -1,5 +1,6 @@
 package com.example.scanner.controller;
 
+import com.example.scanner.dto.UsuarioDTO;
 import com.example.scanner.model.Usuario;
 import com.example.scanner.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -20,18 +21,13 @@ public class UsuarioController {
 
     @GetMapping("/cadastro")
     public String mostrarFormularioCadastro(Model model) {
-        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("usuarioDTO", new UsuarioDTO());
         return "scanner/cadastro_usuario";
     }
 
-    @PostMapping("/cadastrar")
-    public String salvarCadastro(@ModelAttribute Usuario usuario, RedirectAttributes redirectAttributes) {
-        try {
-            usuarioService.salvar(usuario);
-        } catch (DataIntegrityViolationException e) {
-            redirectAttributes.addFlashAttribute("erroCodigo", "Já existe um usuário com este código de barras!");
-            return "redirect:/usuario/cadastro";
-        }
+    @PostMapping("/cadastro")
+    public String registrarNovoUsuario(@ModelAttribute UsuarioDTO usuarioDTO) {
+        usuarioService.registrarNovoUsuario(usuarioDTO);
         return "redirect:/usuario/cadastro";
     }
 
@@ -43,18 +39,18 @@ public class UsuarioController {
         return "scanner/editar_usuario";
     }
 
-    @PostMapping("/editar/{id}")
+    /*@PostMapping("/editar/{id}")
     public String salvarEdicaoUsuario(@PathVariable Integer id, @Valid Usuario usuario, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             usuario.setId(id);
             return "scanner/editar_usuario";
         }
-        try {
-            usuarioService.salvar(usuario);
-        } catch (DataIntegrityViolationException e) {
+        //try {
+            //usuarioService.registrarNovoUsuario(usuario);
+        //} catch (DataIntegrityViolationException e) {
             redirectAttributes.addFlashAttribute("erroCodigo", "Já existe um usuário com este código de barras!");
             return "redirect:/usuario/editar/" + id;
-        }
+        //}
         return "redirect:/sistema/itens-usuarios";
     }
 
@@ -67,5 +63,5 @@ public class UsuarioController {
             redirectAttributes.addFlashAttribute("mensagemErro", "Não é possível excluir este usuário, pois há movimentações vinculadas a ele.");
         }
         return "redirect:/sistema/itens-usuarios";
-    }
+    } */
 }

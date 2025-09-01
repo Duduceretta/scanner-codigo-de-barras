@@ -53,7 +53,7 @@ public class MovimentacaoService {
 
         // Atualiza status para disponível
         item.setStatus(Item.StatusItem.disponivel);
-        itemService.salvar(item);
+        //itemService.salvar(item);
 
         // Cria nova movimentação de devolução
         Movimentacao devolucao = new Movimentacao();

@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
-    Optional<Usuario> findByCodigoBarra(String codigoBarra);
+    Optional<Usuario> findByCodigoDeBarras(String codigoDeBarras);
 }

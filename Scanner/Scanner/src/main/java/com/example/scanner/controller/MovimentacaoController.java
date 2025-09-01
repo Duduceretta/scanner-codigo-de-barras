@@ -75,7 +75,7 @@ public class MovimentacaoController {
 
             // Atualiza status ANTES de registrar movimentação
             item.setStatus(Item.StatusItem.emprestado);
-            itemService.salvar(item);
+            //itemService.salvar(item);
 
             // Registra a movimentação
             movimentacaoService.registrarMovimentacao(

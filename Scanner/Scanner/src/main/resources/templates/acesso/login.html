@@ -17,16 +17,21 @@
     <p th:text="${mensagemErro}"></p>
   </div>
 
-  <form id="loginForm" class="space-y-5" th:action="@{/login}" method="post">
+  <form id="loginForm" class="space-y-5" th:action="@{/login}" method="post" th:object="${loginDTO}">
+
     <div>
-      <label for="emailInput" class="block text-sm font-medium text-gray-700">E-mail</label>
-      <input type="email" id="emailInput" name="emailFornecido" required
+      <label for="email" class="block text-sm font-medium text-gray-700">
+          E-mail
+      </label>
+      <input type="email" id="email" th:field="*{email}" required
              class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-400 focus:outline-none" />
     </div>
 
     <div>
-      <label for="senhaInput" class="block text-sm font-medium text-gray-700">Senha</label>
-      <input type="password" id="senhaInput" name="senhaFornecida" required
+      <label for="senha" class="block text-sm font-medium text-gray-700">
+          Senha
+      </label>
+      <input type="password" id="senha" th:field="*{senha}" required
              class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-400 focus:outline-none" />
     </div>
 
@@ -50,7 +55,7 @@
 </div>
 
 <script>
-  const emailInput = document.getElementById("emailInput");
+  const emailInput = document.getElementById("email");
   const lembrarCheck = document.getElementById("lembrar");
   const form = document.getElementById("loginForm");
 

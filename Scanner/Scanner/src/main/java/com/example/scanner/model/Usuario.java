@@ -2,8 +2,12 @@ package com.example.scanner.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class Usuario {
 
     @Id
@@ -15,29 +19,12 @@ public class Usuario {
 
     @NotBlank
     @Column(name = "codigo_barra", unique = true)
-    private String codigoBarra;
+    private String codigoDeBarras;
 
-    public Integer getId() {
-        return id;
-    }
+    public Usuario() {}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
+    public Usuario(String nome, String codigoDeBarras) {
         this.nome = nome;
-    }
-
-    public String getCodigoBarra() {
-        return codigoBarra;
-    }
-
-    public void setCodigoBarra(String codigoBarra) {
-        this.codigoBarra = codigoBarra;
+        this.codigoDeBarras = codigoDeBarras;
     }
 }

@@ -19,8 +19,6 @@ public class PorteiroService {
         validarEmailNaoExistente(registroDTO.getEmail());
         verificarSeAsSenhasSaoIguais(registroDTO.getSenha(), registroDTO.getSenhaConfirmacao());
 
-        System.out.println(registroDTO.getNome());
-
         Porteiro porteiro = new Porteiro(
                 registroDTO.getNome(),
                 registroDTO.getEmail(),
@@ -43,13 +41,14 @@ public class PorteiroService {
     }
 
     public Porteiro autenticarPorteiro(LoginDTO loginDTO) {
+        System.out.println(loginDTO.getEmail());
         Porteiro porteiro = buscarPorteiroPorEmail(loginDTO.getEmail());
         validarSenha(loginDTO.getSenha(), porteiro.getSenha());
         return porteiro;
     }
 
     private Porteiro buscarPorteiroPorEmail(String email) {
-        return porteiroRepository.findByEmail(email).orElseThrow(() -> new AutenticacaoException("Email ou senha inválidos"));
+        return porteiroRepository.findByEmail(email).orElseThrow(() -> new AutenticacaoException("Email //ou senha inválidos"));
     }
 
     private void validarSenha(String senhaFornecida, String senhaCadastrada) {

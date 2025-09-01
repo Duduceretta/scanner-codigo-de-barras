@@ -1,5 +1,6 @@
 package com.example.scanner.controller;
 
+import com.example.scanner.dto.ItemDTO;
 import com.example.scanner.model.Item;
 import com.example.scanner.service.ItemService;
 import jakarta.validation.Valid;
@@ -20,15 +21,14 @@ public class ItemController {
 
     @GetMapping("/cadastro")
     public String mostrarFormularioCadastro(Model model) {
-        model.addAttribute("item", new Item());
+        model.addAttribute("itemDTO", new ItemDTO());
+        model.addAttribute("tiposDeItem", Item.TipoItem.values());
         return "scanner/cadastro_item";
     }
 
-    @PostMapping("/cadastrar")
-    public String registrarNovoItem(@ModelAttribute Item item, RedirectAttributes redirectAttributes) {
-        itemService.salvar(item);
-        redirectAttributes.addFlashAttribute("mensagemSucesso", "Item cadastrado com sucesso!");
-
+    @PostMapping("/cadastro")
+    public String registrarNovoItem(@ModelAttribute ItemDTO itemDTO) {
+        itemService.registrarNovoItem(itemDTO);
         return "redirect:/item/cadastro";
     }
 
@@ -47,7 +47,7 @@ public class ItemController {
             return "scanner/editar_item";
         }
 
-        itemService.salvar(item);
+
         redirectAttributes.addFlashAttribute("mensagemSucesso", "Item atualizado com sucesso!");
 
         return "redirect:/sistema/itens-usuarios";

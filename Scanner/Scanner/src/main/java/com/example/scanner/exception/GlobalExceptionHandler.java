@@ -25,6 +25,19 @@ public class GlobalExceptionHandler {
         return "redirect:/cadastro";
     }
 
+    @ExceptionHandler(ItemJaCadastradoException.class)
+    public String handleItemJaCadastrado(ItemJaCadastradoException exception, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("mensagemErro", exception.getMessage());
+        return "redirect:/item/cadastro";
+    }
+
+    @ExceptionHandler(UsuarioJaCadastradoException.class)
+    public String handleUsuarioJaCadastradoException(UsuarioJaCadastradoException exception, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("mensagemErro", exception.getMessage());
+
+        return "redirect:/usuario/cadastro";
+    }
+
     @ExceptionHandler(SenhasNaoCoincidemExcepetion.class)
     public String handleSenhasNaoCoincidem(SenhasNaoCoincidemExcepetion exception, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("mensagemErro", exception.getMessage());

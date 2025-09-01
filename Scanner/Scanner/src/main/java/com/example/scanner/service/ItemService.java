@@ -1,6 +1,7 @@
 package com.example.scanner.service;
 
-import com.example.scanner.exception.CustomException;
+import com.example.scanner.dto.ItemDTO;
+import com.example.scanner.exception.ItemJaCadastradoException;
 import com.example.scanner.model.Item;
 import com.example.scanner.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,23 @@ public class ItemService {
         return itemRepository.findById(id);
     }
 
-    public Item salvar(Item item) {
-        if (item.getId() == null) {
-            if (itemRepository.findByCodigoDeBarras(item.getCodigoDeBarras()).isPresent()) {
-                throw new CustomException("Já existe um item com este código de barras!", "/item/cadastro");
-            }
-        }
+    public void registrarNovoItem(ItemDTO itemDTO) {
+        verificarSeOItemJaEstaRegistrado(itemDTO.getCodigoDeBarras());
 
-        return itemRepository.save(item);
+        Item item = new Item(
+                itemDTO.getNome(),
+                itemDTO.getTipo(),
+                itemDTO.getCodigoDeBarras(),
+                Item.StatusItem.disponivel
+        );
+
+        itemRepository.save(item);
+    }
+
+    private void verificarSeOItemJaEstaRegistrado(String codigoDeBarras) {
+        if (itemRepository.findByCodigoDeBarras(codigoDeBarras).isPresent()) {
+            throw new ItemJaCadastradoException("Ja existe um Item cadastrado com o mesmo codigo de barras no sistema.");
+        }
     }
 
     public void excluir(Integer id) {

@@ -39,4 +39,14 @@ public class Item {
         disponivel,
         emprestado
     }
+
+    public Item() {}
+
+    public Item(String nome, TipoItem tipo, String codigoDeBarras, StatusItem status) {
+        this.nome = nome;
+        this.tipo = tipo;
+        this.codigoDeBarras = codigoDeBarras;
+        this.status = status;
+    }
+
 }
