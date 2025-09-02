@@ -41,7 +41,7 @@ public class AcessoController {
         return "acesso/cadastro";
     }
 
-    @PostMapping("/cadastrar")
+    @PostMapping("/cadastro")
     public String registrarNovoPorteiro(@ModelAttribute RegistroDTO registroDTO) {
         porteiroService.registrarNovoPorteiro(registroDTO);
         return "redirect:/login";

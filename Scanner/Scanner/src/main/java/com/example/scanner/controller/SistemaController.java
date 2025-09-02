@@ -23,8 +23,8 @@ public class SistemaController {
 
     @GetMapping("/sistema/itens-usuarios")
     public String mostrarFormularioUsuariosItens(Model model) {
-        model.addAttribute("usuarios", usuarioService.listarTodos());
-        model.addAttribute("itens", itemService.listarTodos());
+        model.addAttribute("usuarios", usuarioService.listarTodosParaVisualizacao());
+        model.addAttribute("itens", itemService.listarTodosParaVisualizacao());
         return "scanner/usuarios_itens_cadastrados";
     }
 }

@@ -1,6 +1,7 @@
 package com.example.scanner.service;
 
 import com.example.scanner.dto.ItemDTO;
+import com.example.scanner.dto.ItemListagemDTO;
 import com.example.scanner.exception.ItemJaCadastradoException;
 import com.example.scanner.model.Item;
 import com.example.scanner.repository.ItemRepository;
@@ -9,20 +10,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemService {
 
     @Autowired
     private ItemRepository itemRepository;
-
-    public List<Item> listarTodos() {
-        return itemRepository.findAll();
-    }
-
-    public Optional<Item> buscarPorId(Integer id) {
-        return itemRepository.findById(id);
-    }
 
     public void registrarNovoItem(ItemDTO itemDTO) {
         verificarSeOItemJaEstaRegistrado(itemDTO.getCodigoDeBarras());
@@ -41,6 +35,27 @@ public class ItemService {
         if (itemRepository.findByCodigoDeBarras(codigoDeBarras).isPresent()) {
             throw new ItemJaCadastradoException("Ja existe um Item cadastrado com o mesmo codigo de barras no sistema.");
         }
+    }
+
+    public List<ItemListagemDTO> listarTodosParaVisualizacao() {
+        List<Item> itens = itemRepository.findAll();
+
+        return itens.stream()
+                .map(item -> new ItemListagemDTO(
+                        item.getId(),
+                        item.getNome(),
+                        item.getCodigoDeBarras(),
+                        item.getStatus()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public List<Item> listarTodos() {
+        return itemRepository.findAll();
+    }
+
+    public Optional<Item> buscarPorId(Integer id) {
+        return itemRepository.findById(id);
     }
 
     public void excluir(Integer id) {

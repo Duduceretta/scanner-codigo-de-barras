@@ -28,7 +28,9 @@
   <img class="mx-auto mb-6 w-40 transition-transform hover:scale-105"
        th:src="@{/imagens/logoUFN.png}" alt="Logo UFN">
 
-  <h2 class="text-2xl font-bold text-center text-gray-800">Usuários e Itens Cadastrados</h2>
+  <h2 class="text-2xl font-bold text-center text-gray-800">
+      Usuários e Itens Cadastrados
+  </h2>
 
   <div th:if="${mensagemErro}" class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center">
     <p th:text="${mensagemErro}"></p>
@@ -40,7 +42,9 @@
 
   <!-- Usuários -->
   <div>
-    <h3 class="text-xl font-semibold text-gray-700 mb-2">Usuários</h3>
+    <h3 class="text-xl font-semibold text-gray-700 mb-2">
+        Usuários
+    </h3>
     <table class="w-full table-auto border border-gray-300 text-sm text-center">
       <thead class="bg-gray-100 text-gray-700">
       <tr>
@@ -52,13 +56,21 @@
 
       <tbody>
       <tr th:each="usuario : ${usuarios}">
-        <td class="p-2 border text-center" th:text="${usuario.nome}"></td>
-        <td class="p-2 border text-center" th:text="${usuario.codigoBarra}"></td>
+        <td class="p-2 border text-center"
+            th:text="${usuario.nome}">
+        </td>
+        <td class="p-2 border text-center"
+            th:text="${usuario.codigoDeBarras}">
+        </td>
         <td class="p-2 border text-center">
           <div class="flex justify-center gap-x-2">
-            <a th:href="@{/usuario/editar/{id}(id=${usuario.id})}" class="min-w-[70px] bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded text-center">Editar</a>
+            <a th:href="@{/usuario/editar/{id}(id=${usuario.id})}" class="min-w-[70px] bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded text-center">
+                Editar
+            </a>
             <a th:href="@{/usuario/excluir/{id}(id=${usuario.id})}" class="min-w-[70px] bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-center"
-               onclick="return confirm('Tem certeza que deseja excluir este usuário?')">Excluir</a>
+               onclick="return confirm('Tem certeza que deseja excluir este usuário?')">
+                Excluir
+            </a>
           </div>
         </td>
       </tr>
@@ -72,7 +84,9 @@
 
   <!-- Itens -->
   <div>
-    <h3 class="text-xl font-semibold text-gray-700 mb-2">Itens</h3>
+    <h3 class="text-xl font-semibold text-gray-700 mb-2">
+        Itens
+    </h3>
     <table class="w-full table-auto border border-gray-300 text-sm text-center">
       <thead class="bg-gray-100 text-gray-700">
       <tr>
@@ -85,14 +99,24 @@
 
       <tbody>
       <tr th:each="item : ${itens}">
-        <td class="p-2 border text-center" th:text="${item.nome}"></td>
-        <td class="p-2 border text-center" th:text="${item.codigoBarra}"></td>
-        <td class="p-2 border text-center" th:text="${item.status}"></td>
+        <td class="p-2 border text-center"
+            th:text="${item.nome}">
+        </td>
+        <td class="p-2 border text-center"
+            th:text="${item.codigoDeBarras}">
+        </td>
+        <td class="p-2 border text-center"
+            th:text="${item.status}">
+        </td>
         <td class="p-2 border text-center">
           <div class="flex justify-center gap-x-2">
-            <a th:href="@{/item/editar/{id}(id=${item.id})}" class="min-w-[70px] bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded text-center">Editar</a>
+            <a th:href="@{/item/editar/{id}(id=${item.id})}" class="min-w-[70px] bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded text-center">
+                Editar
+            </a>
             <a th:href="@{/item/excluir/{id}(id=${item.id})}" class="min-w-[70px] bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-center"
-               onclick="return confirm('Tem certeza que deseja excluir este item?')">Excluir</a>
+               onclick="return confirm('Tem certeza que deseja excluir este item?')">
+                Excluir
+            </a>
           </div>
         </td>
       </tr>
