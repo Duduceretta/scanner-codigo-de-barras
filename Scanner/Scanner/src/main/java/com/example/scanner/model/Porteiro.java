@@ -1,5 +1,6 @@
 package com.example.scanner.model;
 
+import com.example.scanner.exception.AutenticacaoException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +27,12 @@ public class Porteiro {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+    }
+
+    public void validarSenha(String senhaFornecida) {
+        if (!this.senha.equals(senhaFornecida)) {
+            throw new AutenticacaoException("Email ou senha inválidos");
+        }
     }
 
 }
