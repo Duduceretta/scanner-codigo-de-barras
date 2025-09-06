@@ -1,11 +1,11 @@
 package com.example.scanner.controller;
 
 import com.example.scanner.dto.ItemDTO;
+import com.example.scanner.dto.ItemUpdateDTO;
 import com.example.scanner.model.Item;
 import com.example.scanner.service.ItemService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,19 +36,25 @@ public class ItemController {
     public String mostrarFormularioEdicao(@PathVariable Integer id, Model model) {
         Item item = itemService.buscarPorId(id)
                 .orElseThrow(() -> new IllegalArgumentException("Id inválido: " + id));
-        model.addAttribute("item", item);
+
+        model.addAttribute("itemDTO", new ItemUpdateDTO(item));
+        model.addAttribute("itemId", id);
+
         return "scanner/editar_item";
     }
 
     @PostMapping("/editar/{id}")
-    public String atualizarItem(@PathVariable Integer id, @Valid Item item, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String atualizarItem(@PathVariable Integer id,
+                                @Valid @ModelAttribute("itemDTO") ItemUpdateDTO itemDTO,
+                                BindingResult result,
+                                Model model) {
+
         if (result.hasErrors()) {
-            item.setId(id);
+            model.addAttribute("itemId",  id);
             return "scanner/editar_item";
         }
 
-
-        redirectAttributes.addFlashAttribute("mensagemSucesso", "Item atualizado com sucesso!");
+        itemService.atualizarItem(id, itemDTO);
 
         return "redirect:/sistema/itens-usuarios";
     }

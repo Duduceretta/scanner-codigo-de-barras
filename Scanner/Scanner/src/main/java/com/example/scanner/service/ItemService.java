@@ -2,6 +2,7 @@ package com.example.scanner.service;
 
 import com.example.scanner.dto.ItemDTO;
 import com.example.scanner.dto.ItemListagemDTO;
+import com.example.scanner.dto.ItemUpdateDTO;
 import com.example.scanner.exception.ItemJaCadastradoException;
 import com.example.scanner.model.Item;
 import com.example.scanner.repository.ItemRepository;
@@ -35,6 +36,18 @@ public class ItemService {
         if (itemRepository.findByCodigoDeBarras(codigoDeBarras).isPresent()) {
             throw new ItemJaCadastradoException("Ja existe um Item cadastrado com o mesmo codigo de barras no sistema.");
         }
+    }
+
+    public void atualizarItem(int id,  ItemUpdateDTO itemDTO) {
+        Item itemExistente = this.buscarPorId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Id inválido: " + id));
+
+        itemExistente.setNome(itemDTO.getNome());
+        itemExistente.setTipo(itemDTO.getTipo());
+        itemExistente.setCodigoDeBarras(itemDTO.getCodigoDeBarras());
+        itemExistente.setStatus(itemDTO.getStatus());
+
+        itemRepository.save(itemExistente);
     }
 
     public List<ItemListagemDTO> listarTodosParaVisualizacao() {

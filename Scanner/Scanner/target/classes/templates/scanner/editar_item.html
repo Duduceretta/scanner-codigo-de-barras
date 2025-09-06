@@ -28,14 +28,17 @@
   <img class="mx-auto mb-4 w-32" th:src="@{/imagens/logoUFN.png}" alt="Logo UFN">
   <h1 class="text-xl font-bold mb-6 text-center text-gray-800">Editar Item</h1>
 
-  <div th:if="${erroCodigo}" class="mb-4 p-3 rounded-md bg-red-100 border border-red-400 text-red-700">
-    <span th:text="${erroCodigo}"></span>
+  <div th:if="${mensagemErro}" class="mb-4 p-3 rounded-md bg-red-100 border border-red-400 text-red-700">
+    <span th:text="${mensagemErro}"></span>
   </div>
 
-  <form th:action="@{/item/editar/{id}(id=${item.id})}" th:object="${item}" method="post" class="space-y-4">
+  <form th:action="@{/item/editar/{id}(id=${itemId})}" th:object="${itemDTO}" method="post" class="space-y-4">
     <div>
-      <label class="block text-sm font-medium text-gray-700">Nome <span class="text-red-500">*</span></label>
-      <input th:field="*{nome}" type="text" placeholder="Digite o nome do item" class="w-full mt-1 p-3 border border-gray-300 rounded-md bg-gray-50 focus:ring-2 focus:ring-blue-500" required>
+      <label class="block text-sm font-medium text-gray-700">
+          Nome <span class="text-red-500">*</span>
+      </label>
+      <input type="text" id="nome" th:field="*{nome}"
+             placeholder="Digite o nome do item" class="w-full mt-1 p-3 border border-gray-300 rounded-md bg-gray-50 focus:ring-2 focus:ring-blue-500" required>
     </div>
 
     <div>
@@ -48,14 +51,16 @@
 
     <div>
       <label class="block text-sm font-medium text-gray-700">Código de Barras <span class="text-red-500">*</span></label>
-      <input th:field="*{codigoBarra}" id="codigoBarra" type="text" placeholder="Digite o código de barras" class="w-full mt-1 p-3 border border-gray-300 rounded-md bg-gray-50 focus:ring-2 focus:ring-blue-500" required>
+      <input th:field="*{codigoDeBarras}" id="codigoDeBarras" type="text" placeholder="Digite o código de barras" class="w-full mt-1 p-3 border border-gray-300 rounded-md bg-gray-50 focus:ring-2 focus:ring-blue-500" required>
     </div>
 
     <input type="hidden" th:field="*{status}" />
 
     <div class="flex justify-between items-center">
       <a href="/sistema/itens-usuarios" class="text-blue-500 hover:underline">Cancelar</a>
-      <button type="submit" class="bg-cyan-400 hover:bg-cyan-500 text-black px-4 py-2 rounded">Salvar</button>
+      <button type="submit" class="bg-cyan-400 hover:bg-cyan-500 text-black px-4 py-2 rounded">
+          Salvar
+      </button>
     </div>
   </form>
 </div>
